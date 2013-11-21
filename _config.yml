@@ -1,0 +1,5 @@
+exclude: ['Gemfile', 'Gemfile.lock', 'README.md']
+
+name: Oliver Peate
+markdown: redcarpet
+pygments: true

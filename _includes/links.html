@@ -1,0 +1,6 @@
+<h2>{{ include.title }}</h2>
+<ul>
+{% for link in site.data[include.links] %}
+  <li><a href="{{ link.url }}">{{ link.name }}</a></li>
+{% endfor %}
+</ul>
