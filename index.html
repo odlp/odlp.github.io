@@ -1,13 +1,15 @@
 ---
 layout: default
-title: Your New Jekyll Site
+title: Oliver Peate | Web Developer in London
 ---
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+<div class="content" id="projects">
+  {% for project in site.data.projects %}
+    <div class="unit">
+      <div class="num-divider">0{{ forloop.index }}</div>
+      <h2 class="title"><a href="{{ project.link }}" class="title-link">{{ project.name }}</a></h2>
+      <p class="description">{{ project.description }}</p>
+      <a href="{{ project.link }}"><img src="/images/{{ project.img }}" alt="{{ project.name }}" class="image" /></a>
+    </div>
+  {% endfor %}  
 </div>

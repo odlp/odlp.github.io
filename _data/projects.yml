@@ -1,0 +1,12 @@
+- name: codesheet.io
+  link: http://codesheet.io/
+  description: "A cheat sheet creator for developers. Includes ACE text editor and syntax highlighting."
+  img: project-codesheet.png
+- name: MmmTweeVee
+  link: http://mmmtweevee.herokuapp.com/
+  description: "24hr Hackathon project: Finds tweets from people listening to music and loads the matching music video."
+  img: project-mmmtweevee.jpg
+- name: Node.js API Cache
+  link: https://github.com/odlp/node-js-api-cache
+  description: "Caching proxy server for external API calls. Useful for local development & remaining within any rate limits imposed by the API."
+  img: project-node-js-api-cache.png

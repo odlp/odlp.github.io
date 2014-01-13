@@ -1,160 +1,133 @@
-/*****************************************************************************/
-/*
-/* Common
-/*
-/*****************************************************************************/
+/* Reset */
+/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html, body { height: 100%; }
-
+/* Main */
 body {
-  background-color: #FFF;
-  font: 13.34px Helvetica, Arial, sans-serif;
-  font-size: small;
-  text-align: center;
+  background:#404041;
+  color:#fff;
+  font:16px/24px 'Signika Negative', sans-serif;
+  font-weight:400;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-size: 100%; }
-
-h1 { margin-bottom: 1em; }
-p { margin: 1em 0; }
-
-a         { color: #00a; }
-a:hover   { color: #000; }
-a:visited { color: #a0a; }
-
-/*****************************************************************************/
-/*
-/* Home
-/*
-/*****************************************************************************/
-.posts {
-  list-style-type: none;
-  margin-bottom: 2em;
+.wrap {
+  padding-left:33%;
 }
 
-.posts li {
-  line-height: 1.75em;
+#sidebar {
+  background:#00aeef;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  width:33%;
+  overflow:hidden;
 }
 
-.posts span {
-  color: #aaa;
-  font-family: Monaco, "Courier New", monospace;
-  font-size: 80%;
+#sidebar .inner {
+  padding:40px;
 }
 
-/*****************************************************************************/
-/*
-/* Site
-/*
-/*****************************************************************************/
-
-.site {
-  font-size: 115%;
-  text-align: justify;
-  width: 42em;
-  margin: 3em auto 2em;
-  line-height: 1.5em;
+.sidebar-text {
+  font-weight:300;
+  font-size:1.4em;
+  line-height:1.2em;
+  margin:0 0 1.2em 0;
 }
 
-.header a {
-  font-weight: bold;
+.sidebar-text b {
+  font-weight:700;
+}
+
+.content {
+  background:#404041;
+}
+
+#projects {
+  padding:40px;
+}
+
+.unit {
+  margin:0 0 60px 0;
+}
+
+.unit .num-divider {
+  color:#00aeef;
+  font-weight:700;
+  border-bottom:1px solid #565656;
+  line-height:1em;
+  padding:0 0 10px 0;
+  margin:0 0 10px 0;
+  font-size:1.4em;
+}
+
+.unit .title {
+  display:inline-block;
+  margin:0 5px 5px 0;
+}
+
+.unit .title-link {
+  color:#fff;
   text-decoration: none;
 }
 
-.title {
-  display: inline-block;
-  margin-bottom: 2em;
+.unit a.title-link:hover {
+  text-decoration: underline;
 }
 
-.title a {
-  color: #a00;
+.unit .description {
+  display:inline-block;
+  color:#868686;
 }
 
-.title a:hover {
-  color: #000;
+.unit .description:before {
+  content: '\00BB';
+  margin-right:3px;
 }
 
-.header a.extra {
-  color: #aaa;
-  margin-left: 1em;
+.unit .image {
+  margin:10px 0 0 0;
+  width:100%;
+  box-shadow:#333 10px 10px 10px;
 }
 
-.header a.extra:hover {
-  color: #000;
+.unit .image:hover {
+  outline:2px solid #00aeef;
 }
 
-.meta {
-  color: #aaa;
+/* Icons */
+.icon {
+  display:inline-block;
+  width:64px;
+  height:64px;
+  margin:0 20px 0 0;
+  background-color:#0e99cd;
 }
 
-.footer {
-  font-size: 80%;
-  color: #666;
-  border-top: 4px solid #eee;
-  margin-top: 2em;
-  overflow: hidden;
+.icon span {
+  display:none;
 }
 
-.footer .contact {
-  float: left;
-  margin-right: 3em;
+a.icon:hover {
+  background-color:#2088af;
 }
 
-.footer .contact a {
-  color: #8085C1;
+.icon.linkedin {
+  background-image:url('/images/linkedin-128.png');
+  background-size:64px;
 }
 
-.footer .rss {
-  margin-top: 1.1em;
-  margin-right: -.2em;
-  float: right;
+.icon.github {
+  background-image:url('/images/github-128.png');
+  background-size:64px;
 }
 
-.footer .rss img {
-  border: 0;
+.icon.tumblr {
+  background-image:url('/images/tumblr-128.png');
+  background-size:64px;
 }
 
-/*****************************************************************************/
-/*
-/* Posts
-/*
-/*****************************************************************************/
-
-/* standard */
-.post pre {
-  border: 1px solid #ddd;
-  background-color: #eef;
-  padding: 0 .4em;
-}
-
-.post ul, .post ol {
-  margin-left: 1.35em;
-}
-
-.post code {
-  border: 1px solid #ddd;
-  background-color: #eef;
-  padding: 0 .2em;
-}
-
-.post pre code {
-  border: none;
-}
-
-/* terminal */
-.post pre.terminal {
-  border: 1px solid #000;
-  background-color: #333;
-  color: #FFF;
-}
-
-.post pre.terminal code {
-  background-color: #333;
-}
+/* General */
+a img   {border:none;}
+.left   {float:left;}
+.right  {float:right;}
