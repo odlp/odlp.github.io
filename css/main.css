@@ -28,15 +28,28 @@ body {
   padding:40px;
 }
 
-.sidebar-text {
+#sidebar p {
   font-weight:300;
   font-size:1.4em;
-  line-height:1.2em;
+  line-height:1.3em;
   margin:0 0 1.2em 0;
 }
 
-.sidebar-text b {
+#sidebar b {
   font-weight:700;
+}
+
+#contact {
+  background:#0E99CD;
+  padding:0 4px;
+  border-radius:3px;
+  margin:0 2px;
+  text-decoration: none;
+  color:#fff;
+}
+
+a#contact:hover {
+  text-decoration: underline;
 }
 
 .content {
