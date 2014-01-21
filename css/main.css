@@ -144,3 +144,25 @@ a.icon:hover {
 a img   {border:none;}
 .left   {float:left;}
 .right  {float:right;}
+
+/* Media queries */
+@media screen and (max-width: 720px) {
+  .wrap {
+    padding:0;
+  }
+
+  #sidebar {
+    position: relative;
+    width:100%;
+  }
+}
+
+@media screen and (max-width:960px) {
+  #sidebar .inner, #projects {
+    padding:20px;
+  }
+
+  #sidebar p {
+    font-size: 1.2em;
+  }
+}
