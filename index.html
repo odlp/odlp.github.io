@@ -1,15 +1,45 @@
----
-layout: default
-title: Oliver Peate | Web Developer in London
----
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Oliver Peate | Software Developer</title>
 
-<div class="content" id="projects">
-  {% for project in site.data.projects %}
-    <div class="unit">
-      <div class="num-divider">0{{ forloop.index }}</div>
-      <h2 class="title"><a href="{{ project.link }}" class="title-link">{{ project.name }}</a></h2>
-      <p class="description">{{ project.description }}</p>
-      <a href="{{ project.link }}"><img src="/images/{{ project.img }}" alt="{{ project.name }}" class="image" /></a>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="google-site-verification" content="Vg4whgeRBlfmhqLeZKQa3R9-VEZPeBzoPe-aSY8_huI" />
+
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-17139379-1', 'oliverpeate.com');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1>Hi, I&rsquo;m Oli.</h1>
+      <p>I&rsquo;m a software developer with a background in ecommerce and digital marketing. At the moment I&rsquo;m working with Ruby, Swift and Golang.</p>
+      <p>Here a few open source projects I’ve been working on:</p>
+
+      <div class="projects">
+        <div class="project">
+          <h2><a href="https://github.com/odlp/swiftfake">Swiftfake</a></h2>
+          <p>A Ruby gem for <b>generating test doubles in Swift</b>, allowing interactions to be verified and canned values to be returned. Inspired by Counterfeiter in Golang.</p>
+        </div>
+        <div class="project">
+          <h2><a href="https://github.com/odlp/antifreeze">Antifreeze</a></h2>
+          <p>Cloud Foundry plugin to <b>check application manifests before blue-green deployment</b>. This helps prevent unexpected changes during deployments.</p>
+        </div>
+        <div class="project">
+          <h2><a href="https://github.com/odlp/simplify_rb">SimplifyRB</a></h2>
+          <p><b>Polyline simplification library</b> written in Ruby. Use this gem to reduce the number of points in a complex polyline / polygon. Ported from simplify.js</p>
+        </div>
+      </div>
     </div>
-  {% endfor %}  
-</div>
+  </body>
+</html>
