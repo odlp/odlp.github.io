@@ -10,17 +10,19 @@
     <name>Blog Author</name>
   </author>
   <entry>
-    <title>Finely sliced user stories</title>
+    <title>Finely Sliced User Stories</title>
     <link rel="alternate" href="http://blog.url.com/finely-sliced-user-stories/"/>
     <id>http://blog.url.com/finely-sliced-user-stories/</id>
     <published>2017-03-07T00:00:00+00:00</published>
-    <updated>2017-03-07T09:50:54+00:00</updated>
+    <updated>2017-03-08T20:19:14+00:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;p&gt;After working in a team for over two years following XP principles there&amp;rsquo;s one technique which stands out as being fundamental amongst the many practices I learnt: &lt;strong&gt;small user stories&lt;/strong&gt;. It&amp;rsquo;s a cornerstone which supports and encourages many other effective practices.&lt;/p&gt;
+    <content type="html">&lt;p&gt;After working in a team for over two years following XP principles there&amp;rsquo;s one technique that stands out as being fundamental: &lt;strong&gt;writing small user stories&lt;/strong&gt;. It&amp;rsquo;s a cornerstone that supports and encourages other effective practices.&lt;/p&gt;
 
-&lt;p&gt;As a new feature or epic nears the horizon of the product backlog it&amp;rsquo;s time to add detail so work can commence. This means expanding a single line such as &amp;lsquo;Password reset&amp;rsquo; or &amp;lsquo;Promo discount codes&amp;rsquo; into user requirements. While either of these features could be packaged into a single story there&amp;rsquo;s a lot to be gained from dividing the feature up into smaller parts. Let&amp;rsquo;s compare two approaches for the &amp;lsquo;Promo discount codes&amp;rsquo; feature.&lt;/p&gt;
+&lt;p&gt;When a new feature or epic nears the product backlog horizon, before it can be worked on, user stories are needed to surface the detail. This step morphs a single line as short as &amp;ldquo;Password reset&amp;rdquo; or &amp;ldquo;Promotion discount codes&amp;rdquo; into a story from the user&amp;rsquo;s perspective.&lt;/p&gt;
+
+&lt;p&gt;While either of these examples could be described within a single story, there are benefits to be gained from dividing the feature into smaller parts. Let&amp;rsquo;s compare two approaches for the &amp;ldquo;Promotion discount codes&amp;rdquo; feature.&lt;/p&gt;
 
 &lt;h2&gt;The Elephant&lt;/h2&gt;
 
@@ -28,18 +30,20 @@
 
 &lt;p&gt;As a first-time customer I want to receive free delivery on my order.&lt;/p&gt;
 
-&lt;p&gt;Given I&amp;rsquo;ve filled my shopping basket,
-And I am viewing my basket,
-When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,
-Then I should see my basket total discounted by £4.99,
-And I should be charged the discounted amount.&lt;/p&gt;
-
-&lt;p&gt;Given I&amp;rsquo;ve already placed an order,
-And I&amp;rsquo;ve filled my shopping basket,
-And I am viewing my basket,
-When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,
-Then I see a message stating the code cannot be used,
-And my basket total should remain the same.&lt;/p&gt;
+&lt;div class="story orange"&gt;
+Given I&amp;rsquo;ve filled my shopping basket,&lt;br&gt;
+And I am viewing my basket,&lt;br&gt;
+When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
+Then I should see my basket total discounted by £4.99,&lt;br&gt;
+And I should be charged the discounted amount.
+&lt;br&gt;&lt;br&gt;
+Given I&amp;rsquo;ve already placed an order,&lt;br&gt;
+And I&amp;rsquo;ve filled my shopping basket,&lt;br&gt;
+And I am viewing my basket,&lt;br&gt;
+When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
+Then I see a message stating the code cannot be used,&lt;br&gt;
+And my basket total should remain the same.
+&lt;/div&gt;
 
 &lt;h2&gt;An alternative&lt;/h2&gt;
 
@@ -49,90 +53,112 @@ And my basket total should remain the same.&lt;/p&gt;
 
 &lt;p&gt;As a confused customer I am informed if a promotion code is invalid.&lt;/p&gt;
 
-&lt;p&gt;Given I&amp;rsquo;ve filled my shopping basket,
-And I am viewing my basket,
-When I enter the promotion code &amp;ldquo;GIMME£&amp;rdquo;,
-Then I see a message stating the code cannot be used.&lt;/p&gt;
+&lt;div class="story"&gt;
+Given I&amp;rsquo;ve filled my shopping basket,&lt;br&gt;
+And I am viewing my basket,&lt;br&gt;
+When I enter the promotion code &amp;ldquo;GIMME£&amp;rdquo;,&lt;br&gt;
+Then I see a message stating the code cannot be used.
+&lt;/div&gt;
 
 &lt;h3&gt;2: Display the discount when a valid code is applied&lt;/h3&gt;
 
 &lt;p&gt;As a customer I can apply a promotion code to my basket.&lt;/p&gt;
 
-&lt;p&gt;Given I&amp;rsquo;ve filled my shopping basket,
-And I am viewing my basket,
-When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,
-Then I should see my basket total discounted by £4.99.&lt;/p&gt;
+&lt;div class="story"&gt;
+Given I&amp;rsquo;ve filled my shopping basket,&lt;br&gt;
+And I am viewing my basket,&lt;br&gt;
+When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
+Then I should see my basket total discounted by £4.99.
+&lt;/div&gt;
 
 &lt;h3&gt;3: Restrict the discount to first-time customers&lt;/h3&gt;
 
 &lt;p&gt;As a return customer I am informed that I&amp;rsquo;m not eligible to receive this discount.&lt;/p&gt;
 
-&lt;p&gt;Given I&amp;rsquo;ve already placed an order,
-And I&amp;rsquo;ve filled my shopping basket,
-And I am viewing my basket,
-When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,
-Then I see a message stating the code cannot be used.&lt;/p&gt;
+&lt;div class="story"&gt;
+Given I&amp;rsquo;ve already placed an order,
+And I&amp;rsquo;ve filled my shopping basket,&lt;br&gt;
+And I am viewing my basket,&lt;br&gt;
+When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
+Then I see a message stating the code cannot be used.
+&lt;/div&gt;
 
 &lt;h3&gt;4: Apply the discount when charging the customer&lt;/h3&gt;
 
 &lt;p&gt;As a customer I want to be charged the correct amount for my order.&lt;/p&gt;
 
-&lt;p&gt;Given I&amp;rsquo;ve applied the promo code &amp;ldquo;WELCOME&amp;rdquo;,
-When I place my order,
-Then I should be charged the discounted amount.&lt;/p&gt;
+&lt;div class="story"&gt;
+Given I&amp;rsquo;ve applied the promo code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
+When I place my order,&lt;br&gt;
+Then I should be charged the discounted amount.
+&lt;/div&gt;
 
 &lt;h3&gt;5: Update email receipts to show any discounts&lt;/h3&gt;
 
 &lt;p&gt;As a customer I want my receipt to reflect the price paid.&lt;/p&gt;
 
-&lt;p&gt;Given I&amp;rsquo;ve applied the promo code &amp;ldquo;WELCOME&amp;rdquo;,
-and I&amp;rsquo;ve placed an order,
-When I check my email order receipt,
-Then I should see any discount amount,
-And a revised total including any discount.&lt;/p&gt;
+&lt;div class="story"&gt;
+Given I&amp;rsquo;ve applied the promo code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
+and I&amp;rsquo;ve placed an order,&lt;br&gt;
+When I check my email order receipt,&lt;br&gt;
+Then I should see any discount amount,&lt;br&gt;
+And a revised total including any discount.
+&lt;/div&gt;
 
-&lt;h2&gt;&amp;lsquo;Correctness&amp;rsquo;&lt;/h2&gt;
+&lt;h2&gt;Correctness&lt;/h2&gt;
 
-&lt;p&gt;Some people wouldn&amp;rsquo;t split the feature this way. Developing an approach to slice stories varies according to personal taste, the feature itself, and what makes sense for your team. There are many ways to divide a feature and most of them will reach the desired outcome.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve had great discussions with people who wouldn&amp;rsquo;t split the feature this way. Building up an approach to slicing stories varies according to personal taste, the feature itself, and what makes sense for your team. There are numerous ways to divide a feature and many of them will reach the desired outcome.&lt;/p&gt;
 
-&lt;p&gt;An illuminating exercise is sketching out several different cuts of the same feature. Grab a couple of colleagues and try whiteboarding variations of the same feature approached in different directions. Try and make each of the approaches distinct as a experiment.&lt;/p&gt;
+&lt;p&gt;An illuminating exercise is sketching out several different cuts of the same feature. Grab a couple of colleagues and try whiteboarding variations of the same feature approached in different directions. Try to make each approach distinct as an experiment.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt; Try handling the failure case first (as per story #1 of the alternative above) before the story for the &amp;lsquo;happy path&amp;rsquo; success-case. What happens to the remaining stories?&lt;/li&gt;
-&lt;li&gt;Can you write each story as a &amp;lsquo;releasable&amp;rsquo; entity without making any one story too big?&lt;/li&gt;
+&lt;li&gt; Try handling the failure case first (as per story #1 of the alternative above) before the &amp;lsquo;happy-path&amp;rsquo; story for the success case. What happens to the remaining stories?&lt;/li&gt;
+&lt;li&gt;Can you write each story as a releasable entity without making any one story too big?&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2&gt;Let&amp;rsquo;s compare&lt;/h2&gt;
 
-&lt;p&gt;I&amp;rsquo;ve omitted some details and aspects of functionality from the elephant-sized story to keep it readable. It&amp;rsquo;s an illustration of the &amp;lsquo;big bang&amp;rsquo; approach to developing the whole feature at once. You could (in)definitely keep writing requirements for the one story. Suddenly you&amp;rsquo;re the owner of your very own mini waterfall with a specification document and a contents section.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve omitted some details and aspects of functionality from the elephant-sized story to keep it readable. It&amp;rsquo;s an illustration of the &amp;lsquo;big bang&amp;rsquo; approach to tackling the whole feature at once. You could (in)definitely keep writing requirements for the one giant story. Suddenly you&amp;rsquo;re the owner of your very own mini waterfall with a specification document and a contents section.&lt;/p&gt;
 
 &lt;p&gt;Switching focus from the all-in-one story: &lt;strong&gt;What do we gain from dividing what is notionally the same amount of work into smaller stories?&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;Why make five &amp;lsquo;1 point&amp;rsquo; stories over a single &amp;lsquo;5 point&amp;rsquo; story?&lt;/p&gt;
+&lt;p&gt;Why make five 1-point stories over a single 5-point story?&lt;/p&gt;
 
 &lt;h3&gt;Faster feedback&lt;/h3&gt;
 
-&lt;p&gt;Faster feedback is the number one benefit. When a developer has completed the first story the product owner can review the work in the acceptance environment. This encourages frequent, piece-by-piece acceptance of the feature which in turn allows potential issues to be recognised sooner.&lt;/p&gt;
+&lt;p&gt;Faster feedback is the primary benefit: When a developer has completed the first story, the product owner can review the nascent feature on a preview website or build (a.k.a the acceptance environment). This encourages frequent, piece-by-piece acceptance of the feature which in turn reveals potential issues sooner.&lt;/p&gt;
 
-&lt;p&gt;Say after the first story there&amp;rsquo;s that realisation that &amp;ldquo;Oh yes, we did forget about a loading spinner while the promo code is validated&amp;rdquo;. This small detail can be corrected at the end of all the stories, but fixing the issue sooner could be efficient. Maybe a designer can assess how that UI element should work today since they are available.&lt;/p&gt;
+&lt;p&gt;Perhaps after the first story there&amp;rsquo;s a realisation that &lt;em&gt;&amp;ldquo;Oh yes, we forgot about a loading spinner while the promo code is validated&amp;rdquo;&lt;/em&gt;. This extra detail could be rectified at the end of the feature development, but fixing the issue sooner is beneficial. A prompt correction means it&amp;rsquo;s less likely to be observed and reported by multiple people, avoiding a recurring burden on the team.&lt;/p&gt;
 
-&lt;p&gt;Taking this point further, what if the potential issue is more critical? Seeing the groundwork of the feature sooner may lead the team to realise the screen is overloaded and needs to be rethought. It isn&amp;rsquo;t desirable to pause development of the feature but the development team could switch to another track while the checkout flow is redesigned. If the entire feature had been delivered at once there would be more frustration to come since rework is inevitable. Ultimately with smaller stories less code is written before issues are recognised.&lt;/p&gt;
+&lt;p&gt;Taking this point further, what if the potential issue is more critical? Seeing the groundwork of the feature sooner could lead the team to realise the screen is overloaded and needs to be rethought.&lt;/p&gt;
+
+&lt;p&gt;Fortunately being a team which exhibits agility &lt;em&gt;(remember — &lt;a href="https://pragdave.me/blog/2014/03/04/time-to-kill-agile.html"&gt;Agile is Dead&lt;/a&gt;)&lt;/em&gt;, there&amp;rsquo;s the option of switching to another track of work while the checkout flow is reconsidered. If the entire feature had been delivered in one go, in its original guise, then more rework would be required and that&amp;rsquo;s frustrating for everyone involved.&lt;/p&gt;
+
+&lt;p&gt;Ultimately by dealing in smaller stories, less code is written before issues are realised and corrected.&lt;/p&gt;
 
 &lt;h3&gt;Shipping sooner&lt;/h3&gt;
 
-&lt;p&gt;Working in smaller units gives you the option to ship a feature to users sooner. Certain features can&amp;rsquo;t be shipped only partially complete - in our example releasing promotion codes without the fourth story to charge the correct amount to the credit/debit card is unacceptable. One might argue none of the preceding stories are legitimate given this. It&amp;rsquo;s still worth considering the split because it allows faster internal feedback. The entire feature can be hidden until it&amp;rsquo;s ready (a.k.a. feature-flagged) so that it won&amp;rsquo;t be visible for customers in production but remains available to internal testers.&lt;/p&gt;
+&lt;p&gt;Working in smaller units also gives you the option to ship a feature to your users sooner. Releasing a first-cut which offers part of the anticipated functionality can still be valuable to users, even when there are further use cases which need to be covered.&lt;/p&gt;
 
-&lt;p&gt;There&amp;rsquo;s still an early shipping advantage from these stories. Say you&amp;rsquo;re developing a mobile application. Apple review each app release and this can impact how quickly a feature can be delivered to real users. Imagine stories one to four have been signed off in the internal acceptance environment. Whilst the final story about the email receipt is still being worked on a new release can be pushed to Apple for review. The structure of these stories gives you the flexibility to enact any slow moving parts of the release process sooner.&lt;/p&gt;
+&lt;p&gt;Some features can&amp;rsquo;t be shipped only partially complete; in our example releasing the promotion code feature without the fourth story to charge the correct amount to the credit/debit card is unacceptable. One might argue none of the preceding stories are legitimate given this.&lt;/p&gt;
 
-&lt;h3&gt;Limiting complexity&lt;/h3&gt;
+&lt;p&gt;It&amp;rsquo;s still worth considering the split, even when the initial stories aren&amp;rsquo;t releasable, because it allows faster internal feedback. If necessary the whole feature can be hidden until it&amp;rsquo;s ready (a.k.a. feature-flagged) so that it won&amp;rsquo;t be visible for your customers in production but remains available to internal testers.&lt;/p&gt;
 
-&lt;p&gt;For the contributors working directly on the stories there are benefits from small stories too. There&amp;rsquo;s less to keep in your head in one go. It&amp;rsquo;s less daunting to start just one aspect of the feature compared to being overwhelmed with the whole thing at once. Even the feeling of momentum from completing five stories (and picking up something &amp;lsquo;new&amp;rsquo; each time) can give an uplift compared to a big story. Especially when big stories turn out to have hidden complexity and descend into a slog. These psychological benefits may not apply to all contributors but I&amp;rsquo;ve found them valuable.&lt;/p&gt;
+&lt;h3&gt;Momentum and limiting complexity&lt;/h3&gt;
 
-&lt;p&gt;As a contributor when you can consider smaller parts of the feature at a time it allows for deeper thought about how the feature will work. This can lead to more focused feedback back upstream to the product development team. For example with the promotion code feature, the nuance of which error message to display if you&amp;rsquo;ve already used the code compared to when the code is invalid. We can all communicate with greater clarity and in more depth when we&amp;rsquo;re focusing on smaller units of work.&lt;/p&gt;
+&lt;p&gt;For the contributors working directly on the stories there are benefits from small stories too. There&amp;rsquo;s less to keep in your head in one go. It feels less daunting to start just one aspect of the feature versus being overwhelmed with the whole thing at once.&lt;/p&gt;
+
+&lt;p&gt;Completing five stories — and picking up something &amp;lsquo;new&amp;rsquo; each time — gives a feeling of momentum. This is especially true when big stories turn out to have hidden complexity and descend into a slog. These psychological benefits may not apply to all contributors, but I&amp;rsquo;ve found them valuable.&lt;/p&gt;
+
+&lt;p&gt;By considering smaller parts of the feature at a time we also allow for deeper thought about how the feature will work. This leads to more focused feedback back upstream to those in command of the product. For example, with the promotion code feature, the nuance of which error message to display if you&amp;rsquo;ve already used the code versus when the code is invalid.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We all communicate with greater clarity when focusing on smaller units of work.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3&gt;Opportunity to rotate&lt;/h3&gt;
 
-&lt;p&gt;If one developer or a pair tackles the entire feature in a giant story then you&amp;rsquo;ve missed an opportunity. With smaller stories it opens up the possibility of multiple contributors working on a feature (either handing over after each one or through work in parallel). This could be perceived as detrimental to short term progress because there&amp;rsquo;s handover and more coordination required, but this is nothing compared to the significant long terms benefits like reducing siloed knowledge. It also encourages greater distribution of knowledge and skills amongst the entire team.&lt;/p&gt;
+&lt;p&gt;If one developer or a pair tackles the entire feature in a giant story then they&amp;rsquo;re the gatekeepers of how the feature works in a technical capacity. Smaller stories make it easier for multiple contributors to work on a feature, either with a handover or through working in parallel.&lt;/p&gt;
+
+&lt;p&gt;Any handover can be perceived as detrimental to short term progress since more coordination is required, but reducing siloed knowledge has significant long term benefit. Rotation through a feature encourages greater distribution of knowledge and sharing of skills amongst the entire team.&lt;/p&gt;
 
 &lt;h2&gt;To recap&lt;/h2&gt;
 
@@ -140,23 +166,52 @@ And a revised total including any discount.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Faster feedback cycles&lt;/li&gt;
-&lt;li&gt;Uncover issues sooner&lt;/li&gt;
-&lt;li&gt;Option to release the base feature sooner&lt;/li&gt;
+&lt;li&gt;Uncovering issues sooner&lt;/li&gt;
+&lt;li&gt;The option to release the base feature sooner&lt;/li&gt;
 &lt;li&gt;Flexibility to reorganise the backlog if priorities change&lt;/li&gt;
 &lt;li&gt;Limits complexity and mental burden for contributors&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2&gt;Slicing technique&lt;/h2&gt;
 
-&lt;p&gt;It takes time to build up instinct on how to divide stories for your team. Every skill takes practice. There will be times when at first the stories seem fine but when shared with the team they immediately feel uncomfortable. Perhaps the stories then need to be rewritten but you&amp;rsquo;ll have learnt from it.&lt;/p&gt;
+&lt;p&gt;It takes time to build up instinct of how to divide stories for your team. It takes practice. There will be times when the stories seem fine at the point of being written, but immediately feel uncomfortable when read aloud to the team. Perhaps the stories then need to be rewritten but you&amp;rsquo;ll have learnt from it.&lt;/p&gt;
 
 &lt;p&gt;Here a few considerations to keep in mind when slicing up a feature:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Can each story be accepted without technical assistance? (Avoiding &amp;ldquo;Let me show you that in the database&amp;rdquo; wherever possible.)&lt;/li&gt;
+&lt;li&gt;Can each story be accepted without technical assistance? Avoid &amp;ldquo;Let me show you that in the database&amp;rdquo; acceptance wherever possible.&lt;/li&gt;
 &lt;li&gt;Can you keep each story independently releasable without making any one story too large?&lt;/li&gt;
 &lt;li&gt;Can you structure the stories so more developers can work on the feature at once?&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;style&gt;
+.story {
+  position: relative;
+  padding: 1em 1.5em;
+  margin: 1em auto;
+  color: #fff;
+  background: #36B1BF;
+  line-height: 1.6em;
+}
+
+.story:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 1em 1em 0;
+  border-style: solid;
+  border-color: #309CA8 #fff;
+}
+
+.story.orange {
+  background: #F5A503;
+}
+
+.story.orange:before {
+  border-color: #DB9403 #fff;
+}
+&lt;/style&gt;
 </content>
   </entry>
   <entry>
