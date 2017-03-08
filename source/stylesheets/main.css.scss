@@ -1,0 +1,120 @@
+@charset "utf-8";
+@import "normalize";
+@import "syntax";
+@import "roboto-light";
+@import "roboto-slab-regular";
+
+$background: #fff;
+$primary-color: #333;
+$hairline: #eee;
+$space: 20px;
+
+body {
+  background: $background;
+  font-family: "robotolight", serif;
+  font-size: 22px;
+  color: $primary-color;
+}
+
+nav {
+  margin: $space 0;
+  padding-bottom: $space;
+  border-bottom: 1px solid $hairline;
+  font-size: 16px;
+
+  a {
+    color: #666;
+  }
+
+  .back::before {
+    padding-right: 5px;
+    content: "\2039";
+  }
+}
+
+h1, h2, h3 {
+  font-family: "roboto_slabregular", sans-serif;
+}
+
+h1 {
+  margin: 1em 0 0.5em 0;
+  font-size: 42px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h2, h3 {
+  margin: 1.5em 0 0.5em;
+}
+
+h2 + h3 {
+  margin-top: 0.5em;
+}
+
+p, li {
+  line-height: 1.75em;
+}
+
+p {
+  margin: 0.5em 0 1.5em 0;
+}
+
+a {
+  color: #2980B9;
+
+  :hover {
+    color: #206A9A;
+  }
+}
+
+ul {
+  margin-bottom: 1em;
+}
+
+li {
+  list-style: disc outside;
+  margin-bottom: 0.5em;
+}
+
+pre {
+  padding: 0.25em;
+  border-radius: 7px;
+
+  >code {
+    font-size: 16px;
+    display: flex;
+  }
+
+}
+
+.container {
+  margin: 0 auto $space auto;
+  max-width: 800px;
+
+  @media screen and (max-width: 840px) {
+    margin-left: $space;
+    margin-right: $space;
+  }
+}
+
+.article-summary {
+  margin: $space 0;
+
+  .article-link {
+    font-size: 24px;
+    display: inline-block;
+    margin-bottom: 0.25em;
+  }
+
+  .article-date {
+    color: #999;
+    font-size: 18px;
+    display: block;
+  }
+}

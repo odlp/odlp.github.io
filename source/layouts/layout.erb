@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="Vg4whgeRBlfmhqLeZKQa3R9-VEZPeBzoPe-aSY8_huI" />
+    <title><%= current_article&.title || "Oliver Peate" %></title>
+    <%= stylesheet_link_tag "main" %>
+    <%= feed_tag :atom, "#{blog.options.prefix.to_s}/feed.xml", title: "Atom Feed" %>
+  </head>
+  <body>
+    <div class="container">
+      <% if current_article %>
+        <nav>
+          <span class="back"><a href="/">Home</a></span>
+        </nav>
+      <% end %>
+      <div role="main">
+        <% if current_article != nil %>
+          <h1><%= current_article.title %></h1>
+        <% end %>
+        <%= yield %>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-17139379-1', 'oliverpeate.com');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

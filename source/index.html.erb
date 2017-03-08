@@ -1,0 +1,29 @@
+---
+pageable: true
+per_page: 20
+---
+<h1>Hi, I&rsquo;m Oli.</h1> <p>I&rsquo;m a software developer with a background
+in ecommerce and digital marketing. At the moment I&rsquo;m working with Ruby,
+Swift and Golang. You can find a few <%= link_to 'open source projects', '/open-source.html' %> I’ve been working on.</p>
+
+<% if paginate && num_pages > 1 %>
+  <p>Page <%= page_number %> of <%= num_pages %></p>
+
+  <% if prev_page %>
+    <p><%= link_to 'Previous page', prev_page %></p>
+  <% end %>
+<% end %>
+
+<h2>Articles</h2>
+<% page_articles.each_with_index do |article, i| %>
+  <div class="article-summary">
+    <%= link_to article.title, article, class: "article-link" %>
+    <span class="article-date"><%= article.date.strftime('%b %e %Y') %></span>
+  </div>
+<% end %>
+
+<% if paginate %>
+  <% if next_page %>
+    <p><%= link_to 'Next page', next_page %></p>
+  <% end %>
+<% end %>
