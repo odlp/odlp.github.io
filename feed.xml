@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://blog.url.com/finely-sliced-user-stories/"/>
     <id>http://blog.url.com/finely-sliced-user-stories/</id>
     <published>2017-03-07T00:00:00+00:00</published>
-    <updated>2017-03-08T20:19:14+00:00</updated>
+    <updated>2017-03-08T21:08:56+00:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -76,7 +76,7 @@ Then I should see my basket total discounted by £4.99.
 &lt;p&gt;As a return customer I am informed that I&amp;rsquo;m not eligible to receive this discount.&lt;/p&gt;
 
 &lt;div class="story"&gt;
-Given I&amp;rsquo;ve already placed an order,
+Given I&amp;rsquo;ve already placed an order,&lt;br&gt;
 And I&amp;rsquo;ve filled my shopping basket,&lt;br&gt;
 And I am viewing my basket,&lt;br&gt;
 When I enter the promotion code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
@@ -99,7 +99,7 @@ Then I should be charged the discounted amount.
 
 &lt;div class="story"&gt;
 Given I&amp;rsquo;ve applied the promo code &amp;ldquo;WELCOME&amp;rdquo;,&lt;br&gt;
-and I&amp;rsquo;ve placed an order,&lt;br&gt;
+And I&amp;rsquo;ve placed an order,&lt;br&gt;
 When I check my email order receipt,&lt;br&gt;
 Then I should see any discount amount,&lt;br&gt;
 And a revised total including any discount.
@@ -187,7 +187,7 @@ And a revised total including any discount.
 &lt;style&gt;
 .story {
   position: relative;
-  padding: 1em 1.5em;
+  padding: 0.8em 1.2em;
   margin: 1em auto;
   color: #fff;
   background: #36B1BF;
