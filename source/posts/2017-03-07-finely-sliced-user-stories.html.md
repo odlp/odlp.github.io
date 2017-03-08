@@ -57,7 +57,7 @@ Then I should see my basket total discounted by £4.99.
 As a return customer I am informed that I'm not eligible to receive this discount.
 
 <div class="story">
-Given I've already placed an order,
+Given I've already placed an order,<br>
 And I've filled my shopping basket,<br>
 And I am viewing my basket,<br>
 When I enter the promotion code "WELCOME",<br>
@@ -78,7 +78,7 @@ As a customer I want my receipt to reflect the price paid.
 
 <div class="story">
 Given I've applied the promo code "WELCOME",<br>
-and I've placed an order,<br>
+And I've placed an order,<br>
 When I check my email order receipt,<br>
 Then I should see any discount amount,<br>
 And a revised total including any discount.
@@ -154,7 +154,7 @@ Here a few considerations to keep in mind when slicing up a feature:
 <style>
 .story {
   position: relative;
-  padding: 1em 1.5em;
+  padding: 0.8em 1.2em;
   margin: 1em auto;
   color: #fff;
   background: #36B1BF;

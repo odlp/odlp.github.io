@@ -2,18 +2,24 @@
 @import "normalize";
 @import "syntax";
 @import "roboto-light";
-@import "roboto-slab-regular";
+@import "roboto-slab-bold";
 
 $background: #fff;
 $primary-color: #333;
 $hairline: #eee;
 $space: 20px;
 
+$small-device: 600px;
+
 body {
   background: $background;
   font-family: "robotolight", serif;
   font-size: 22px;
   color: $primary-color;
+
+  @media screen and (max-width: $small-device) {
+    font-size: 18px;
+  }
 }
 
 nav {
@@ -33,20 +39,37 @@ nav {
 }
 
 h1, h2, h3 {
-  font-family: "roboto_slabregular", sans-serif;
+  font-family: "roboto_slabbold", sans-serif;
+  text-rendering: optimizeLegibility;
+
+  @media screen and (max-width: $small-device) {
+    letter-spacing: -0.05em;
+  }
 }
 
 h1 {
   margin: 1em 0 0.5em 0;
   font-size: 42px;
+
+  @media screen and (max-width: $small-device) {
+    font-size: 32px;
+  }
 }
 
 h2 {
   font-size: 30px;
+
+  @media screen and (max-width: $small-device) {
+    font-size: 26px;
+  }
 }
 
 h3 {
   font-size: 24px;
+
+  @media screen and (max-width: $small-device) {
+    font-size: 22px;
+  }
 }
 
 h2, h3 {
@@ -59,6 +82,10 @@ h2 + h3 {
 
 p, li {
   line-height: 1.75em;
+
+  @media screen and (max-width: $small-device) {
+    line-height: 1.6em;
+  }
 }
 
 p {
@@ -75,6 +102,10 @@ a {
 
 ul {
   margin-bottom: 1em;
+
+  @media screen and (max-width: $small-device) {
+    -webkit-padding-start: $space;
+  }
 }
 
 li {
