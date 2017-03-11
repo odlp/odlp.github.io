@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://blog.url.com/finely-sliced-user-stories/"/>
     <id>http://blog.url.com/finely-sliced-user-stories/</id>
     <published>2017-03-07T00:00:00+00:00</published>
-    <updated>2017-03-08T21:08:56+00:00</updated>
+    <updated>2017-03-11T17:16:05+00:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -120,7 +120,7 @@ And a revised total including any discount.
 
 &lt;p&gt;I&amp;rsquo;ve omitted some details and aspects of functionality from the elephant-sized story to keep it readable. It&amp;rsquo;s an illustration of the &amp;lsquo;big bang&amp;rsquo; approach to tackling the whole feature at once. You could (in)definitely keep writing requirements for the one giant story. Suddenly you&amp;rsquo;re the owner of your very own mini waterfall with a specification document and a contents section.&lt;/p&gt;
 
-&lt;p&gt;Switching focus from the all-in-one story: &lt;strong&gt;What do we gain from dividing what is notionally the same amount of work into smaller stories?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Switching focus from the all-in-one story: &lt;strong&gt;What do we gain from dividing what is notionally the same amount of development work into smaller stories?&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Why make five 1-point stories over a single 5-point story?&lt;/p&gt;
 
@@ -174,7 +174,7 @@ And a revised total including any discount.
 
 &lt;h2&gt;Slicing technique&lt;/h2&gt;
 
-&lt;p&gt;It takes time to build up instinct of how to divide stories for your team. It takes practice. There will be times when the stories seem fine at the point of being written, but immediately feel uncomfortable when read aloud to the team. Perhaps the stories then need to be rewritten but you&amp;rsquo;ll have learnt from it.&lt;/p&gt;
+&lt;p&gt;It takes time and practice to build up an instinct of how to divide stories for your team. There will be times when the stories seem fine at the point of being written, but immediately feel uncomfortable when read aloud to the team. Perhaps the stories then need to be rewritten but you&amp;rsquo;ll have learnt from it.&lt;/p&gt;
 
 &lt;p&gt;Here a few considerations to keep in mind when slicing up a feature:&lt;/p&gt;
 
