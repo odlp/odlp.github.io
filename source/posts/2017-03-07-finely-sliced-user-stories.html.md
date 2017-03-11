@@ -95,7 +95,7 @@ An illuminating exercise is sketching out several different cuts of the same fea
 ## Let's compare
 I've omitted some details and aspects of functionality from the elephant-sized story to keep it readable. It's an illustration of the 'big bang' approach to tackling the whole feature at once. You could (in)definitely keep writing requirements for the one giant story. Suddenly you're the owner of your very own mini waterfall with a specification document and a contents section.
 
-Switching focus from the all-in-one story: **What do we gain from dividing what is notionally the same amount of work into smaller stories?**
+Switching focus from the all-in-one story: **What do we gain from dividing what is notionally the same amount of development work into smaller stories?**
 
 Why make five 1-point stories over a single 5-point story?
 
@@ -143,7 +143,7 @@ The benefits of keeping user stories small:
 - Limits complexity and mental burden for contributors
 
 ## Slicing technique
-It takes time to build up instinct of how to divide stories for your team. It takes practice. There will be times when the stories seem fine at the point of being written, but immediately feel uncomfortable when read aloud to the team. Perhaps the stories then need to be rewritten but you'll have learnt from it.
+It takes time and practice to build up an instinct of how to divide stories for your team. There will be times when the stories seem fine at the point of being written, but immediately feel uncomfortable when read aloud to the team. Perhaps the stories then need to be rewritten but you'll have learnt from it.
 
 Here a few considerations to keep in mind when slicing up a feature:
 
