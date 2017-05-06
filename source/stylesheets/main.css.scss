@@ -125,7 +125,7 @@ pre {
 }
 
 .container {
-  margin: 0 auto $space auto;
+  margin: 0 auto ($space * 4) auto;
   max-width: 800px;
 
   @media screen and (max-width: 840px) {
