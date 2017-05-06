@@ -687,7 +687,7 @@ pre {
     display: flex; }
 
 .container {
-  margin: 0 auto 20px auto;
+  margin: 0 auto 80px auto;
   max-width: 800px; }
   @media screen and (max-width: 840px) {
     .container {
