@@ -5,10 +5,364 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2017-03-07T00:00:00+00:00</updated>
+  <updated>2017-05-08T01:00:00+01:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Reworking Tests for Future You</title>
+    <link rel="alternate" href="http://blog.url.com/reworking-tests-for-future-you/"/>
+    <id>http://blog.url.com/reworking-tests-for-future-you/</id>
+    <published>2017-05-08T01:00:00+01:00</published>
+    <updated>2017-05-08T19:44:22+01:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;&lt;strong&gt;A journey in search of helpful failure messages and maintainable test structure.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Pairing with a colleague last year we worked on a feature which required parsing recipes from a JSON file. The resulting production code felt natural and well considered after working in a familiar red-green-refactor approach.&lt;/p&gt;
+
+&lt;p&gt;
+&lt;em&gt;Ship it.&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;Done.&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;Next story.&lt;/em&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Hang on! Our creation had an unloved side. The happy-path tests — covering the anticipated path with no errors — were easy to read and described how the feature was intended to work. In contrast the error handling tests were comprehensive (covering all branches) but far from intelligible.&lt;/p&gt;
+
+&lt;p&gt;The error-cases were expressed through two specs; one for missing values and another for invalid values. Each scenario had an accompanying JSON fixture file. Each spec eventually contained assertions for several required fields.&lt;/p&gt;
+
+&lt;p&gt;During development the JSON fixture files began as an array containing one invalid JSON object and a red test, then the code to pass the test was written. As the cycle was repeated, a new invalid JSON object to the fixture file each time — &lt;strong&gt;this was a mistake&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s an abridged model, similar to the original:&lt;/p&gt;
+&lt;pre class="highlight go"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="k"&gt;type&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;Recipe&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;ID&lt;/span&gt;&lt;span class="x"&gt;          &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="x"&gt;       &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;CookingTime&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;An excerpt of the test:&lt;/p&gt;
+&lt;pre class="highlight go"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"missing required recipe fields"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;It&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"skips over the invalid recipes"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;fixture&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="s"&gt;"../test_data/missing_attributes_recipes.json"&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;ioutil&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ReadFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fixture&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ToNot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveOccurred&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="x"&gt;
+
+        &lt;/span&gt;&lt;span class="n"&gt;recipes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseRecipes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="x"&gt;
+
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ToNot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveOccurred&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;recipes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;To&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveLen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the JSON fixture file with an array with 4 invalid examples:&lt;/p&gt;
+&lt;pre class="highlight json"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"recipes"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;{},&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+      &lt;/span&gt;&lt;span class="s2"&gt;"attributes"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+      &lt;/span&gt;&lt;span class="s2"&gt;"attributes"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+        &lt;/span&gt;&lt;span class="s2"&gt;"title"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Tasty Potatoes"&lt;/span&gt;&lt;span class="w"&gt;
+      &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+      &lt;/span&gt;&lt;span class="s2"&gt;"attributes"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+        &lt;/span&gt;&lt;span class="s2"&gt;"title"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Tasty Potatoes"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+        &lt;/span&gt;&lt;span class="s2"&gt;"recipe_id"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"112233-R"&lt;/span&gt;&lt;span class="w"&gt;
+      &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This structure succeeded in building out the feature but it left ample room for improvement. The hit list of problems include:&lt;/p&gt;
+
+&lt;h3&gt;1: Implicit assertion&lt;/h3&gt;
+
+&lt;p&gt;The test &lt;em&gt;implies&lt;/em&gt; all the invalid records have been skipped by asserting the return list is empty. The weak assertion also produces a terrible error message on failure:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;• Failure [0.001 seconds]
+RecipesParser
+    missing required recipe fields
+        skips over the invalid recipes [It]
+
+        Expected
+                &amp;lt;[]model.Recipe | len:1, cap:1&amp;gt;: [
+                        {
+                                ID: "112233-R",
+                                Title: "",
+                                CookingTime: 10,
+                        },
+                ]
+        to have length 0
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the validation breaks then an incomplete model is returned by the parser. In this case a recipe with an empty title. Our failure message states a list which is expected to be empty has a value present — that&amp;rsquo;s a very murky failure.&lt;/p&gt;
+
+&lt;h3&gt;2: Fragile&lt;/h3&gt;
+
+&lt;p&gt;Each JSON object in the fixture file builds up the required recipe fields one by one, to pass as far as the next validation rule in the implementation.&lt;/p&gt;
+
+&lt;p&gt;This means the fixture file is tied to the sequence in which the recipe fields are validated. If the production code is reordered, although the tests will still pass, it decreases coverage because of the poor test structure (parsing of each invalid model would halt earlier than intended).&lt;/p&gt;
+
+&lt;h3&gt;3: Unclear&lt;/h3&gt;
+
+&lt;p&gt;The fixture file&amp;rsquo;s omission of each required field was understood at the time of writing, but isn&amp;rsquo;t communicated clearly for future readers and maintainers.&lt;/p&gt;
+
+&lt;p&gt;If another contributor stumbled across this test failing they&amp;rsquo;d most probably have to read the test, the fixture, and the production code to figure out why it was now failing. As one of the original authors, I&amp;rsquo;d also struggle to recall this information as time passes.&lt;/p&gt;
+
+&lt;p&gt;This vagueness adds time and unnecessary mental overhead to figuring out whats gone wrong in the event of a future bug. The failure of this test wants to be crystal clear. Then the valiant fixer-to-be can start looking HOW to fix it, with less head-scratching and context gathering needed on the way.&lt;/p&gt;
+
+&lt;h2&gt;Time for a rethink&lt;/h2&gt;
+
+&lt;p&gt;The first step was to restructure the &lt;code&gt;RecipeParser&lt;/code&gt; to focus on a single recipe entity, pushing the iteration over each raw value &amp;amp; mapping the parsed values to a higher-level.&lt;/p&gt;
+
+&lt;p&gt;The next step was breaking out &lt;strong&gt;an example per validation rule&lt;/strong&gt;. One test for each required field. This was avoided this the first time round because it felt verbose — but it&amp;rsquo;s not a valid reason and this false concern lead to heavily overloaded tests.&lt;/p&gt;
+
+&lt;p&gt;While splitting out the original two tests, it felt correct that each fixture should be otherwise complete, apart from the recipe field under examination:&lt;/p&gt;
+&lt;pre class="highlight go"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"missing required recipe fields"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;It&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"returns an error if the title is missing"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;rawJSON&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="s"&gt;`{
+            "attributes": {
+                "recipe_id": "112233-R",
+                "cooking_time": 30
+            }
+        }`&lt;/span&gt;&lt;span class="x"&gt;
+
+        &lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;nosj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseJSON&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rawJSON&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ToNot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveOccurred&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="x"&gt;
+
+        &lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseRecipeJSON&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;To&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MatchError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Missing title for recipe"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;&lt;span class="x"&gt;
+
+    &lt;/span&gt;&lt;span class="n"&gt;It&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"returns an error if the ID is missing"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;rawJSON&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="s"&gt;`{
+            "attributes": {
+                "title": "Tasty Potatoes",
+                "cooking_time": 30
+            }
+        }`&lt;/span&gt;&lt;span class="x"&gt;
+
+        &lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;nosj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseJSON&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rawJSON&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ToNot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveOccurred&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="x"&gt;
+
+        &lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseRecipeJSON&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;To&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MatchError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Missing id for recipe"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;&lt;span class="x"&gt;
+
+    &lt;/span&gt;&lt;span class="c"&gt;// ... abridged&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This feels like progress. This step makes comprehension easier since the &lt;strong&gt;input is right next to the test&lt;/strong&gt;. The reader doesn&amp;rsquo;t have to fumble with finding and loading the fixture file in an adjacent editor pane to read the test.&lt;/p&gt;
+
+&lt;p&gt;Another benefit of the new test structure is the failure message is clearer:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;• Failure [0.001 seconds]
+RecipesParser
+    missing required recipe fields
+        returns an error if the title is missing [It]
+
+        Expected an error, got nil
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Satisfied with these improvements and after a quick git pit-stop to commit them, it was time to carry on developing the feature — there were another 10 or so attributes to parse. Moving on to the next required field exposed a hidden cost of the new test structure&amp;hellip;&lt;/p&gt;
+
+&lt;h2&gt;A tedious side effect&lt;/h2&gt;
+
+&lt;p&gt;When new validation rules and specs are added, all the other specs in the context needed updating. If the validation of a new recipe field was placed first in the implementation, it would break all the other validation tests because their JSON strings don&amp;rsquo;t contain the new required field.&lt;/p&gt;
+
+&lt;p&gt;Alternatively if the new validation rule is added at the end of the implementation the other tests wouldn&amp;rsquo;t fail in that moment. The downside is the tests regress to knowing exactly which recipe fields need to be present to reach the particular validation rule they are focused on — the same problem as before.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s reasonable to believe the test shouldn&amp;rsquo;t influence the inner workings of the production code. Tests are present to assert on the output or outcome of that code, and define their subject&amp;rsquo;s interface. The sequence in which recipe fields are parsed doesn&amp;rsquo;t matter in this use case.&lt;/p&gt;
+
+&lt;h3&gt;The final hurdle?&lt;/h3&gt;
+
+&lt;p&gt;Overall the new structure of these tests with an assertion per recipe field felt like an improvement. The remaining issue was solely tied to keeping the fixture for each test in the correct state. This realisation led us to create builder to generate the fixture JSON for each test.&lt;/p&gt;
+
+&lt;p&gt;The builder allowed generation of valid JSON, or invalid JSON using a flag to omit a specified recipe field:&lt;/p&gt;
+&lt;pre class="highlight go"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="c"&gt;// Building valid JSON:&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="n"&gt;defaultConfig&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipeBuilderConfig&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="n"&gt;validRecipeJSON&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipeJSONBuilder&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;defaultConfig&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+
+&lt;/span&gt;&lt;span class="c"&gt;// Building JSON missing the title field:&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="n"&gt;missingTitleConfig&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipeBuilderConfig&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;Flag&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Missing&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="no"&gt;true&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="n"&gt;missingTitleJSON&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipeJSONBuilder&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Using a builder there&amp;rsquo;s no need to touch any of the other validation tests when adding a new recipe field. By updating the builder the existing tests receive the new fields. The tests are now isolated from one another.&lt;/p&gt;
+
+&lt;p&gt;I think this isolation alone is worth the trade-off of creating a builder for this particular spec. The builder itself could have a bug or develop a regression, which then invalidates or confuses the test where the built JSON is consumed. Fortunately some of that risk can be mitigated by writing a test for the builder.&lt;/p&gt;
+
+&lt;h2&gt;Finishing touches&lt;/h2&gt;
+
+&lt;p&gt;Finally, the cherry on top. The builder approach offers the chance to restructure all the tests relating to the required fields as a &lt;a href="https://onsi.github.io/ginkgo/#table-driven-tests"&gt;table test&lt;/a&gt;. All the examples and expected values can share the same test function, which cuts down on the repetition each test had before.&lt;/p&gt;
+&lt;pre class="highlight go"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="n"&gt;parseRecipeAndAssertError&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="k"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;expectedError&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipeBuilderConfig&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;builtJSON&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipeJSONBuilder&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;recipeJSON&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;nosj&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseJSON&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;builtJSON&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ToNot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveOccurred&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="x"&gt;
+
+    &lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;RecipesParser&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseRecipeJSON&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;recipeJSON&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+
+    &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;To&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HaveOccurred&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;Expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Error&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;To&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ContainSubstring&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;expectedError&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="x"&gt;
+
+&lt;/span&gt;&lt;span class="n"&gt;DescribeTable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"error when missing attribute:"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;parseRecipeAndAssertError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="c"&gt;// our test function&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;Entry&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="s"&gt;"title"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="s"&gt;"Missing title for recipe."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;RecipeBuilderConfig&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;Flag&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Missing&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="no"&gt;true&lt;/span&gt;&lt;span class="p"&gt;}},&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="n"&gt;Entry&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="s"&gt;"ID"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="s"&gt;"Missing id for recipe."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="x"&gt;
+        &lt;/span&gt;&lt;span class="n"&gt;RecipeBuilderConfig&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;ID&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="n"&gt;Flag&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Missing&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="x"&gt; &lt;/span&gt;&lt;span class="no"&gt;true&lt;/span&gt;&lt;span class="p"&gt;}},&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="x"&gt;
+    &lt;/span&gt;&lt;span class="c"&gt;// and so on...&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Recap&lt;/h2&gt;
+
+&lt;p&gt;Personally this made me think about:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Writing tests with clearer failure messages.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Keeping raw input alongside the test whenever practical. Tests are easier to read when the input is inline or nearby.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Being open to writing complex(-ish) helpers like a JSON builder which are only used in the tests. Even if this leads to &amp;ldquo;tests for test helpers&amp;rdquo; as a sanity check.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
   <entry>
     <title>Finely Sliced User Stories</title>
     <link rel="alternate" href="http://blog.url.com/finely-sliced-user-stories/"/>
