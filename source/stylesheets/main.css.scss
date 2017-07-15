@@ -139,13 +139,18 @@ pre {
 
   .article-link {
     font-size: 24px;
-    display: inline-block;
+    display: block;
     margin-bottom: 0.25em;
   }
 
-  .article-date {
+  .article-date, .article-note {
     color: #999;
     font-size: 18px;
-    display: block;
+    display: inline-block;
+  }
+
+  .article-note:before {
+    padding: 0 5px 0 0;
+    content: "···"
   }
 }

@@ -39,6 +39,7 @@ activate :blog do |blog|
 end
 
 activate :directory_indexes
+activate :asset_hash
 
 configure :build do
   # Minify CSS on build

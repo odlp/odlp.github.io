@@ -8,4 +8,10 @@ module BlogContentHelpers
   def external_content
     data.external_content.map { |attributes| ExternalContent.new(attributes) }
   end
+
+  def external_content_note(article)
+    if article.url.include? "robots.thoughtbot.com"
+      "Written for Giant Robots"
+    end
+  end
 end
