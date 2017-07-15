@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -593,14 +594,14 @@ textarea {
 
 @font-face {
   font-family: 'robotolight';
-  src: url("../fonts/Roboto-Light-webfont.eot");
-  src: url("../fonts/Roboto-Light-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Light-webfont.woff") format("woff"), url("../fonts/Roboto-Light-webfont.ttf") format("truetype");
+  src: url("../fonts/Roboto-Light-webfont-42fe1569.eot");
+  src: url("../fonts/Roboto-Light-webfont-42fe1569.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Light-webfont-55c6bb6e.woff") format("woff"), url("../fonts/Roboto-Light-webfont-90a18394.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 @font-face {
   font-family: 'roboto_slabbold';
-  src: url("../fonts/RobotoSlab-Bold-webfont.eot");
-  src: url("../fonts/RobotoSlab-Bold-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/RobotoSlab-Bold-webfont.woff") format("woff"), url("../fonts/RobotoSlab-Bold-webfont.ttf") format("truetype");
+  src: url("../fonts/RobotoSlab-Bold-webfont-ecb285ec.eot");
+  src: url("../fonts/RobotoSlab-Bold-webfont-ecb285ec.eot?#iefix") format("embedded-opentype"), url("../fonts/RobotoSlab-Bold-webfont-d1ffaa69.woff") format("woff"), url("../fonts/RobotoSlab-Bold-webfont-6edaacac.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 body {
@@ -698,9 +699,12 @@ pre {
   margin: 20px 0; }
   .article-summary .article-link {
     font-size: 24px;
-    display: inline-block;
+    display: block;
     margin-bottom: 0.25em; }
-  .article-summary .article-date {
+  .article-summary .article-date, .article-summary .article-note {
     color: #999;
     font-size: 18px;
-    display: block; }
+    display: inline-block; }
+  .article-summary .article-note:before {
+    padding: 0 5px 0 0;
+    content: "···"; }
