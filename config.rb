@@ -34,10 +34,8 @@ activate :blog do |blog|
   # blog.month_link = "{year}/{month}.html"
   # blog.day_link = "{year}/{month}/{day}.html"
 
-  # Enable pagination
-  blog.paginate = true
-  blog.per_page = 10
-  blog.page_link = "page/{num}"
+  # Pagination
+  blog.paginate = false
 end
 
 activate :directory_indexes
