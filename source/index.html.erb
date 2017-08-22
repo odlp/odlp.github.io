@@ -13,7 +13,7 @@ Swift and Golang. You can find a few <%= link_to 'open source projects', '/open-
     <%= link_to article.title, article, class: "article-link" %>
     <span class="article-date"><%= article.date.strftime('%b %e, %Y') %></span>
     <%- unless external_content_note(article).nil? %>
-      <span class="article-note"><%= external_content_note(article) %></span>
+      <span class="article-note"><%= external_content_icon(article) %> <%= external_content_note(article) %></span>
     <% end %>
   </div>
 <% end %>

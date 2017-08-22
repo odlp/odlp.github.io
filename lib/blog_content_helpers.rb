@@ -14,4 +14,10 @@ module BlogContentHelpers
       "Written for Giant Robots"
     end
   end
+
+  def external_content_icon(article)
+    if article.url.include? "robots.thoughtbot.com"
+      image_tag "robots.png"
+    end
+  end
 end
