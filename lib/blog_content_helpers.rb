@@ -11,7 +11,7 @@ module BlogContentHelpers
 
   def external_content_note(article)
     if article.url.include? "robots.thoughtbot.com"
-      "Written for Giant Robots"
+      "Written on Giant Robots"
     end
   end
 

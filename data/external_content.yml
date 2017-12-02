@@ -1,4 +1,7 @@
 ---
+  - title: Graceful Switching of Worker Processes
+    url: https://robots.thoughtbot.com/graceful-switching-of-worker-processes
+    date: 2017-11-28T11:00:00Z
   - title: Lean & Maintainable Reports with Heroku Dataclips
     url: https://robots.thoughtbot.com/lean-maintainable-reports-with-heroku-dataclips
     date: 2017-08-21T11:00:00Z
