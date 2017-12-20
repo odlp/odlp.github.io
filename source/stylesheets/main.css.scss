@@ -159,3 +159,27 @@ pre {
     color: #999;
   }
 }
+
+.profile-icons {
+  a {
+    text-decoration: none;
+    margin-right: $space;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  &--twitter svg {
+    fill: #1DA1F2;
+  }
+
+  &--github svg {
+    fill: #181717;
+  }
+
+  &--linkedin svg {
+    fill: #0077B5;
+  }
+}
