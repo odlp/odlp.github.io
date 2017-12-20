@@ -2,12 +2,16 @@
   - title: Graceful Switching of Worker Processes
     url: https://robots.thoughtbot.com/graceful-switching-of-worker-processes
     date: 2017-11-28T11:00:00Z
+    featured_url: https://rubyweekly.com/issues/378
+    featured_text: 'Ruby Weekly #378'
   - title: Lean & Maintainable Reports with Heroku Dataclips
     url: https://robots.thoughtbot.com/lean-maintainable-reports-with-heroku-dataclips
     date: 2017-08-21T11:00:00Z
   - title: Tips for Using FactoryGirl Without an ORM
     url: https://robots.thoughtbot.com/tips-for-using-factory-girl-without-an-orm
     date: 2017-06-22T11:00:00Z
+    featured_url: https://rubyweekly.com/issues/355
+    featured_text: 'Ruby Weekly #355'
   - title: Slicing up Rails Application.js for Faster Load Times
     url: https://robots.thoughtbot.com/slicing-up-rails-application-js-for-faster-load-times
     date: 2017-02-27T11:00:00Z

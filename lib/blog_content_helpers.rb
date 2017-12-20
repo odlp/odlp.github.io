@@ -20,4 +20,10 @@ module BlogContentHelpers
       image_tag "robots.png"
     end
   end
+
+  def featured_url(article)
+    return unless article.respond_to? :featured_url
+
+    article.featured_url
+  end
 end

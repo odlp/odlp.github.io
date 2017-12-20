@@ -150,7 +150,12 @@ pre {
   }
 
   .article-note:before {
-    padding: 0 5px 0 0;
-    content: "···"
+    color: #ccc;
+    content: "|";
+    padding: 0 10px 0 5px;
+  }
+
+  .article-note a {
+    color: #999;
   }
 }

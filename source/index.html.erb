@@ -15,5 +15,8 @@ Swift and Golang. You can find a few <%= link_to 'open source projects', '/open-
     <%- unless external_content_note(article).nil? %>
       <span class="article-note"><%= external_content_icon(article) %> <%= external_content_note(article) %></span>
     <% end %>
+    <%- unless featured_url(article).nil? %>
+      <span class="article-note">Featured in <%= link_to article.featured_text, article.featured_url %></span>
+    <%- end %>
   </div>
 <% end %>
