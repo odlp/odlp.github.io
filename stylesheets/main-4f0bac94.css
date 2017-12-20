@@ -710,3 +710,16 @@ pre {
     padding: 0 10px 0 5px; }
   .article-summary .article-note a {
     color: #999; }
+
+.profile-icons a {
+  text-decoration: none;
+  margin-right: 20px; }
+.profile-icons svg {
+  width: 32px;
+  height: 32px; }
+.profile-icons--twitter svg {
+  fill: #1DA1F2; }
+.profile-icons--github svg {
+  fill: #181717; }
+.profile-icons--linkedin svg {
+  fill: #0077B5; }
