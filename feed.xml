@@ -636,7 +636,7 @@ And a revised total including any discount.
     <link rel="alternate" href="http://blog.url.com/testing-a-uiviewcontroller/"/>
     <id>http://blog.url.com/testing-a-uiviewcontroller/</id>
     <published>2016-01-31T00:00:00+00:00</published>
-    <updated>2017-12-26T17:40:13+00:00</updated>
+    <updated>2017-12-26T18:08:19+00:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -739,7 +739,7 @@ Here we&amp;rsquo;ll start to setup our test:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;On line #3 we use the &lt;code&gt;@testable&lt;/code&gt; &lt;a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html"&gt;declaration attribute&lt;/a&gt; when importing our app. This allows us to reference internal entities of our app for testing purposes without declaring them as public.&lt;/li&gt;
 &lt;li&gt;On line #10 we instantiate our view controller from the storyboard using the &lt;strong&gt;Storyboard ID&lt;/strong&gt; that we set earlier in the Interface Builder.&lt;/li&gt;
-&lt;li&gt;On line #13 instead of directly invoking the &lt;code&gt;didTapSayHi:&lt;/code&gt; method on the view controller, we can test the action is correctly wired up from the interface by sending the action to the button.&lt;/li&gt;
+&lt;li&gt;On line #14 instead of directly invoking the &lt;code&gt;didTapSayHi:&lt;/code&gt; method on the view controller, we can test the action is correctly wired up from the interface by sending the action to the button.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h3&gt;Beginners luck?&lt;/h3&gt;
