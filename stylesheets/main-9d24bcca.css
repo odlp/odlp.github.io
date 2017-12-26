@@ -693,6 +693,8 @@ pre {
     .container {
       margin-left: 20px;
       margin-right: 20px; } }
+  .container img {
+    max-width: 800px; }
 
 .article-summary {
   margin: 20px 0; }

@@ -631,4 +631,216 @@ And a revised total including any discount.
 &lt;p&gt;I have to stop writing this now, because the time spent rewriting the test and making this post is bordering on outrageous for such a simple feature. It wasn’t the burden which this one test weighed which made me pause, rather the thought behind it. If that thought spreads throughout your test suite, conspiring with other code gremlins along the way, it’s going make change hard and painful. Change should rarely be painful.&lt;/p&gt;
 </content>
   </entry>
+  <entry>
+    <title>Testing a UIViewController in Swift</title>
+    <link rel="alternate" href="http://blog.url.com/testing-a-uiviewcontroller/"/>
+    <id>http://blog.url.com/testing-a-uiviewcontroller/</id>
+    <published>2016-01-31T00:00:00+00:00</published>
+    <updated>2017-12-26T17:40:13+00:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;This article is an introduction on how to unit test a view controller using
+&lt;a href="https://github.com/Quick/Quick"&gt;Quick&lt;/a&gt;, a BDD-style testing framework. We&amp;rsquo;ll be
+testing a view controller where the user can enter their name into a text field,
+tap a button, and see a greeting.&lt;/p&gt;
+
+&lt;p&gt;If you haven&amp;rsquo;t experimented with creating outlets and actions to link elements
+in interface builder to a view controller yet, this is your moment. See you in a
+few minutes.&lt;/p&gt;
+
+&lt;p&gt;To get started we&amp;rsquo;ll need a &lt;code&gt;UIViewController&lt;/code&gt; with a &lt;code&gt;UITextField&lt;/code&gt;, &lt;code&gt;UIButton&lt;/code&gt;,
+and &lt;code&gt;UILabel&lt;/code&gt; wired up from the interface builder to our code. You can use a
+Storyboard or a NIB file to define your view controller&amp;rsquo;s interface.&lt;/p&gt;
+
+&lt;h3&gt;The Interface&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src="/images/testing-a-uiviewcontroller/interface-81f8db66.png" alt="Interface" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Remember to set the &lt;strong&gt;Class&lt;/strong&gt; to &lt;code&gt;MyViewController&lt;/code&gt; using the Identity Inspector
+tab, otherwise you won&amp;rsquo;t be able to create outlets and actions. While you&amp;rsquo;re
+there make sure to set the &lt;strong&gt;Storyboard ID&lt;/strong&gt; to &lt;code&gt;MyViewController&lt;/code&gt; too:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/images/testing-a-uiviewcontroller/setting-the-storyboard-id-c694ebf4.png" alt="Setting the storyboard id" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;The UIViewController&lt;/h3&gt;
+&lt;pre class="highlight swift"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="kd"&gt;import&lt;/span&gt; &lt;span class="kt"&gt;UIKit&lt;/span&gt;
+
+&lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="kt"&gt;MyViewController&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;UIViewController&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;@IBOutlet&lt;/span&gt; &lt;span class="k"&gt;weak&lt;/span&gt; &lt;span class="k"&gt;var&lt;/span&gt; &lt;span class="nv"&gt;nameTextField&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;UITextField&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
+    &lt;span class="kd"&gt;@IBOutlet&lt;/span&gt; &lt;span class="k"&gt;weak&lt;/span&gt; &lt;span class="k"&gt;var&lt;/span&gt; &lt;span class="nv"&gt;sayHiButton&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;UIButton&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
+    &lt;span class="kd"&gt;@IBOutlet&lt;/span&gt; &lt;span class="k"&gt;weak&lt;/span&gt; &lt;span class="k"&gt;var&lt;/span&gt; &lt;span class="nv"&gt;greetingLabel&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;UILabel&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
+
+    &lt;span class="kd"&gt;@IBAction&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nf"&gt;didTapSayHi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;sender&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;UIButton&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// Not implemented yet&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Testing time!&lt;/h2&gt;
+
+&lt;p&gt;In your test target, create a new Swift file named &lt;code&gt;MyViewControllerSpec.swift&lt;/code&gt;.
+Here we&amp;rsquo;ll start to setup our test:&lt;/p&gt;
+&lt;pre class="highlight swift"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="kd"&gt;import&lt;/span&gt; &lt;span class="kt"&gt;Quick&lt;/span&gt;
+&lt;span class="kd"&gt;import&lt;/span&gt; &lt;span class="kt"&gt;Nimble&lt;/span&gt;
+&lt;span class="kd"&gt;@testable&lt;/span&gt; &lt;span class="kd"&gt;import&lt;/span&gt; &lt;span class="kt"&gt;MyApp&lt;/span&gt;
+
+&lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="kt"&gt;MyViewControllerSpec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;QuickSpec&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;override&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nf"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nf"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"tapping 'Say Hi'"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nf"&gt;it&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"says Hi with the name provided"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="nv"&gt;storyboard&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;UIStoryboard&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"Main"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;bundle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="nv"&gt;viewController&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;storyboard&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instantiateViewControllerWithIdentifier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"MyViewController"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as!&lt;/span&gt; &lt;span class="kt"&gt;MyViewController&lt;/span&gt;
+
+                &lt;span class="n"&gt;viewController&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;nameTextField&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Bob"&lt;/span&gt;
+                &lt;span class="n"&gt;viewController&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sayHiButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;sendActionsForControlEvents&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;TouchUpInside&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+                &lt;span class="nf"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;viewController&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;greetingLabel&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;equal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Hi Bob"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There a few points of interest to note here:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;On line #3 we use the &lt;code&gt;@testable&lt;/code&gt; &lt;a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html"&gt;declaration attribute&lt;/a&gt; when importing our app. This allows us to reference internal entities of our app for testing purposes without declaring them as public.&lt;/li&gt;
+&lt;li&gt;On line #10 we instantiate our view controller from the storyboard using the &lt;strong&gt;Storyboard ID&lt;/strong&gt; that we set earlier in the Interface Builder.&lt;/li&gt;
+&lt;li&gt;On line #13 instead of directly invoking the &lt;code&gt;didTapSayHi:&lt;/code&gt; method on the view controller, we can test the action is correctly wired up from the interface by sending the action to the button.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Beginners luck?&lt;/h3&gt;
+
+&lt;p&gt;It&amp;rsquo;s time to run our test. Press &lt;code&gt;⌘ U&lt;/code&gt; or click &lt;code&gt;Product &amp;gt; Test&lt;/code&gt; from the top
+navigation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/images/testing-a-uiviewcontroller/exc-bad-instruction-b2ff9fb6.png" alt="Exc bad instruction" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Uh oh. That didn&amp;rsquo;t work. We got a &lt;code&gt;EXC_BAD_INSTRUCTION&lt;/code&gt; crash.&lt;/p&gt;
+
+&lt;p&gt;If you see an &lt;code&gt;NSInvalidArgumentException&lt;/code&gt; instead then double check you set the
+Storyboard ID in the interface builder and run the test again.&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;failed: caught "NSInvalidArgumentException", "Storyboard (&amp;lt;UIStoryboard: 0x7fb98973b220&amp;gt;) doesn't contain a view controller with identifier 'MyViewController'"
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Detective work&lt;/h3&gt;
+
+&lt;p&gt;Let&amp;rsquo;s open the &lt;strong&gt;Debug area&lt;/strong&gt; in Xcode to take a look at what went wrong:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;⇧ ⌘ Y&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;or &lt;code&gt;View &amp;gt; Debug Area &amp;gt; Show Debug Area&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the debug console in the right-hand pane you should see something similar to:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;fatal error: unexpectedly found nil while unwrapping an Optional value
+(lldb)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;An object we were expecting to be present was &lt;code&gt;nil&lt;/code&gt; when we sent a message to it.
+Let&amp;rsquo;s investigate further by expanding the &lt;code&gt;viewController&lt;/code&gt; variable in the
+Variables view located in the left-hand pane:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/images/testing-a-uiviewcontroller/debug-area-cf836359.png" alt="Debug area" /&gt;&lt;/p&gt;
+
+&lt;p&gt;What we can see here is that our outlets for the text field, button and label all have &lt;code&gt;nil&lt;/code&gt; values. The reason our app crashes is because each of these outlets is declared as an &lt;a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID334"&gt;Implicity Unwrapped Optional&lt;/a&gt; - this is denoted by the exclaimation mark after the class (e.g. &lt;code&gt;UILabel!&lt;/code&gt;). This means we are assuming a value will be assigned to the property and that we won&amp;rsquo;t encounter &lt;code&gt;nil&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;By default, as we create outlets from the interface to the view controller these
+properties are declared as implicitly unwrapped optionals because as the code we
+write in the view controller lifecycle methods like &lt;code&gt;viewDidLoad&lt;/code&gt; occurs &lt;em&gt;after&lt;/em&gt;
+the view controller has been instantiated.&lt;/p&gt;
+
+&lt;h2&gt;Shining a light&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;We need to trigger the initialization of the UI elements. After we instantiate
+the view controller from the storyboard in our test, we need to invoke the
+following methods:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://developer.apple.com/documentation/uikit/uiviewcontroller/1621387-beginappearancetransition"&gt;beginAppearanceTransition(_:animated:)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://developer.apple.com/documentation/uikit/uiviewcontroller/1621503-endappearancetransition"&gt;endAppearanceTransition()&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="highlight swift"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// abridged MyViewControllerSpec.swift&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="nv"&gt;storyboard&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;UIStoryboard&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"Main"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;bundle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="nv"&gt;viewController&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;storyboard&lt;/span&gt;
+    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;instantiateViewControllerWithIdentifier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"MyViewController"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as!&lt;/span&gt; &lt;span class="kt"&gt;MyViewController&lt;/span&gt;
+
+&lt;span class="n"&gt;viewController&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;beginAppearanceTransition&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;animated&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;viewController&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;endAppearanceTransition&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Time to run our tests again (&lt;code&gt;⌘ U&lt;/code&gt;). This time round you should see a failure,
+but not a crash. Hopefully your debug console has line stating:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;failed - expected to equal &amp;lt;Hi Bob&amp;gt;, got &amp;lt;Hi Guest&amp;gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now it&amp;rsquo;s time to complete our implementation and get this test passing. In
+&lt;code&gt;MyViewController.swift&lt;/code&gt; it&amp;rsquo;s time to complete the &lt;code&gt;didTapSayHi:&lt;/code&gt;
+implementation:&lt;/p&gt;
+&lt;pre class="highlight swift"&gt;&lt;code&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="rouge-gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="rouge-code"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// abridged MyViewController.swift&lt;/span&gt;
+&lt;span class="kd"&gt;@IBAction&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nf"&gt;didTapSayHi&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;sender&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kt"&gt;UIButton&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nameTextField&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="k"&gt;where&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isEmpty&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;greetingLabel&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Hi &lt;/span&gt;&lt;span class="se"&gt;\(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="se"&gt;)&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;greetingLabel&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"Hi Guest"&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally run the tests again and you should be treated to sweet success.
+Congratulations!&lt;/p&gt;
+</content>
+  </entry>
 </feed>
