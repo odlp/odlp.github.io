@@ -8,6 +8,7 @@ $background: #fff;
 $primary-color: #333;
 $hairline: #eee;
 $space: 20px;
+$max-width: 800px;
 
 $small-device: 600px;
 
@@ -126,11 +127,15 @@ pre {
 
 .container {
   margin: 0 auto ($space * 4) auto;
-  max-width: 800px;
+  max-width: $max-width;
 
   @media screen and (max-width: 840px) {
     margin-left: $space;
     margin-right: $space;
+  }
+
+  img {
+    max-width: $max-width;
   }
 }
 
