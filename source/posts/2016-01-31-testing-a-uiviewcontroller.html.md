@@ -76,7 +76,7 @@ There a few points of interest to note here:
 
 1. On line #3 we use the `@testable` [declaration attribute](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html) when importing our app. This allows us to reference internal entities of our app for testing purposes without declaring them as public.
 2. On line #10 we instantiate our view controller from the storyboard using the **Storyboard ID** that we set earlier in the Interface Builder.
-3. On line #13 instead of directly invoking the `didTapSayHi:` method on the view controller, we can test the action is correctly wired up from the interface by sending the action to the button.
+3. On line #14 instead of directly invoking the `didTapSayHi:` method on the view controller, we can test the action is correctly wired up from the interface by sending the action to the button.
 
 ### Beginners luck?
 
