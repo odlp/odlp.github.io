@@ -664,6 +664,9 @@ p, li {
 p {
   margin: 0.5em 0 1.5em 0; }
 
+b {
+  color: #000; }
+
 a {
   color: #2980B9; }
   a :hover {
@@ -703,15 +706,12 @@ pre {
     display: block;
     margin-bottom: 0.25em; }
   .article-summary .article-date, .article-summary .article-note {
-    color: #999;
     font-size: 18px;
     display: inline-block; }
   .article-summary .article-note:before {
-    color: #ccc;
+    color: #ddd;
     content: "|";
     padding: 0 10px 0 5px; }
-  .article-summary .article-note a {
-    color: #999; }
 
 .profile-icons a {
   text-decoration: none;
