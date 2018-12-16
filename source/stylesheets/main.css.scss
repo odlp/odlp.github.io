@@ -129,6 +129,16 @@ pre {
 
 }
 
+table {
+  border-collapse: collapse;
+
+  th, td {
+    text-align: left;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+  }
+}
+
 .container {
   margin: 0 auto ($space * 4) auto;
   max-width: $max-width;
