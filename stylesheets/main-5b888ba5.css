@@ -689,6 +689,13 @@ pre {
     font-size: 16px;
     display: flex; }
 
+table {
+  border-collapse: collapse; }
+  table th, table td {
+    text-align: left;
+    border: 1px solid #ccc;
+    padding: 4px 8px; }
+
 .container {
   margin: 0 auto 80px auto;
   max-width: 800px; }
