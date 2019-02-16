@@ -23,9 +23,9 @@ It("returns a list of postcodes", func() {
 
 *This snippet is a just a [tribute](https://www.youtube.com/watch?v=_lK4cX5xGiQ) — the original is not mine to share.*
 
-This test will fail if list is updated with any new postcodes or old ones are removed. It’s just mirroring the values in the source file. The path of least resistance is to simply update the test with the new anticipated values, see it fail, and update the implementation.
+This test will fail if the list is updated with any new postcodes or old ones are removed. It’s just mirroring the values in the source file. The path of least resistance is to simply update the test with the new anticipated values, see it fail, and update the implementation.
 
-If that thought made you feel uneasy then you’re not alone. The postcodes in the list are direct values loaded from a file, part of the configuration of the application. Ideally the implicit virtues of the existing test can be teased out whilst rewriting it to be less brittle. Ultimately a change to the postcode list should not automatically necessitiate a change to a test.
+If that thought made you feel uneasy then you’re not alone. The postcodes in the list are direct values loaded from a file, part of the configuration of the application. Ideally the implicit virtues of the existing test can be teased out whilst rewriting it to be less brittle. Ultimately a change to the postcode list should not automatically necessitate a change to a test.
 
 In my opinion the replacement tests would seek to verify:
 
