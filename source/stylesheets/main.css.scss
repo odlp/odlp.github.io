@@ -1,8 +1,6 @@
 @charset "utf-8";
 @import "normalize";
 @import "syntax";
-@import "roboto-light";
-@import "roboto-slab-bold";
 
 $background: #fff;
 $primary-color: #333;
@@ -14,7 +12,8 @@ $small-device: 600px;
 
 body {
   background: $background;
-  font-family: "robotolight", serif;
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: 22px;
   color: $primary-color;
 
@@ -40,17 +39,13 @@ nav {
 }
 
 h1, h2, h3 {
-  font-family: "roboto_slabbold", sans-serif;
+  font-weight: 700;
   text-rendering: optimizeLegibility;
-
-  @media screen and (max-width: $small-device) {
-    letter-spacing: -0.05em;
-  }
 }
 
 h1 {
   margin: 1em 0 0.5em 0;
-  font-size: 42px;
+  font-size: 48px;
 
   @media screen and (max-width: $small-device) {
     font-size: 32px;
@@ -58,7 +53,7 @@ h1 {
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 32px;
 
   @media screen and (max-width: $small-device) {
     font-size: 26px;
@@ -82,10 +77,10 @@ h2 + h3 {
 }
 
 p, li {
-  line-height: 1.75em;
+  line-height: 1.6em;
 
   @media screen and (max-width: $small-device) {
-    line-height: 1.6em;
+    line-height: 1.5em;
   }
 }
 
@@ -95,6 +90,7 @@ p {
 
 b {
   color: #000;
+  font-weight: 700;
 }
 
 a {
@@ -131,11 +127,16 @@ pre {
 
 table {
   border-collapse: collapse;
+  margin-bottom: 1.5em;
+
+  th {
+    background: #f5f5f5;
+  }
 
   th, td {
     text-align: left;
     border: 1px solid #ccc;
-    padding: 4px 8px;
+    padding: 6px 10px;
   }
 }
 
@@ -150,6 +151,10 @@ table {
 
   img {
     max-width: $max-width;
+
+    @media screen and (max-width: $small-device) {
+      max-width: 100%;
+    }
   }
 }
 
@@ -159,12 +164,19 @@ table {
   .article-link {
     font-size: 24px;
     display: block;
-    margin-bottom: 0.25em;
+
+    @media screen and (max-width: $small-device) {
+      font-size: 20px;
+    }
   }
 
   .article-date, .article-note {
     font-size: 18px;
     display: inline-block;
+
+    @media screen and (max-width: $small-device) {
+      font-size: 14px;
+    }
   }
 
   .article-note:before {
