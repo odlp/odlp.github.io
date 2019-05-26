@@ -591,21 +591,10 @@ textarea {
 .rouge-code, .rouge-gutter {
   border: none; }
 
-@font-face {
-  font-family: 'robotolight';
-  src: url("../fonts/Roboto-Light-webfont-42fe1569.eot");
-  src: url("../fonts/Roboto-Light-webfont-42fe1569.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Light-webfont-55c6bb6e.woff") format("woff"), url("../fonts/Roboto-Light-webfont-90a18394.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal; }
-@font-face {
-  font-family: 'roboto_slabbold';
-  src: url("../fonts/RobotoSlab-Bold-webfont-ecb285ec.eot");
-  src: url("../fonts/RobotoSlab-Bold-webfont-ecb285ec.eot?#iefix") format("embedded-opentype"), url("../fonts/RobotoSlab-Bold-webfont-d1ffaa69.woff") format("woff"), url("../fonts/RobotoSlab-Bold-webfont-6edaacac.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal; }
 body {
   background: #fff;
-  font-family: "robotolight", serif;
+  font-weight: 400;
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: 22px;
   color: #333; }
   @media screen and (max-width: 600px) {
@@ -624,21 +613,18 @@ nav {
     content: "\2039"; }
 
 h1, h2, h3 {
-  font-family: "roboto_slabbold", sans-serif;
+  font-weight: 700;
   text-rendering: optimizeLegibility; }
-  @media screen and (max-width: 600px) {
-    h1, h2, h3 {
-      letter-spacing: -0.05em; } }
 
 h1 {
   margin: 1em 0 0.5em 0;
-  font-size: 42px; }
+  font-size: 48px; }
   @media screen and (max-width: 600px) {
     h1 {
       font-size: 32px; } }
 
 h2 {
-  font-size: 30px; }
+  font-size: 32px; }
   @media screen and (max-width: 600px) {
     h2 {
       font-size: 26px; } }
@@ -656,16 +642,17 @@ h2 + h3 {
   margin-top: 0.5em; }
 
 p, li {
-  line-height: 1.75em; }
+  line-height: 1.6em; }
   @media screen and (max-width: 600px) {
     p, li {
-      line-height: 1.6em; } }
+      line-height: 1.5em; } }
 
 p {
   margin: 0.5em 0 1.5em 0; }
 
 b {
-  color: #000; }
+  color: #000;
+  font-weight: 700; }
 
 a {
   color: #2980B9; }
@@ -690,11 +677,14 @@ pre {
     display: flex; }
 
 table {
-  border-collapse: collapse; }
+  border-collapse: collapse;
+  margin-bottom: 1.5em; }
+  table th {
+    background: #f5f5f5; }
   table th, table td {
     text-align: left;
     border: 1px solid #ccc;
-    padding: 4px 8px; }
+    padding: 6px 10px; }
 
 .container {
   margin: 0 auto 80px auto;
@@ -705,16 +695,24 @@ table {
       margin-right: 20px; } }
   .container img {
     max-width: 800px; }
+    @media screen and (max-width: 600px) {
+      .container img {
+        max-width: 100%; } }
 
 .article-summary {
   margin: 20px 0; }
   .article-summary .article-link {
     font-size: 24px;
-    display: block;
-    margin-bottom: 0.25em; }
+    display: block; }
+    @media screen and (max-width: 600px) {
+      .article-summary .article-link {
+        font-size: 20px; } }
   .article-summary .article-date, .article-summary .article-note {
     font-size: 18px;
     display: inline-block; }
+    @media screen and (max-width: 600px) {
+      .article-summary .article-date, .article-summary .article-note {
+        font-size: 14px; } }
   .article-summary .article-note:before {
     color: #ddd;
     content: "|";
@@ -724,8 +722,8 @@ table {
   text-decoration: none;
   margin-right: 20px; }
 .profile-icons svg {
-  width: 32px;
-  height: 32px; }
+  width: 36px;
+  height: 36px; }
 .profile-icons--twitter svg {
   fill: #1DA1F2; }
 .profile-icons--github svg {
