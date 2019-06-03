@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="Vg4whgeRBlfmhqLeZKQa3R9-VEZPeBzoPe-aSY8_huI" />
+    <title>Replicating the Travis Build Matrix with Docker</title>
+    <link href="/stylesheets/main-9afd31ef.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+  </head>
+  <body>
+    <div class="container">
+        <nav>
+          <span class="back"><a href="/">Home</a></span>
+        </nav>
+      <div role="main">
+          <h1>Replicating the Travis Build Matrix with Docker</h1>
+        <p>It&rsquo;s beneficial to test your open-source software library works correctly with
+multiple versions of its dependencies, and multiple versions of the programming
+language. You want to have confidence the library works as intended for your
+users, and prevent regressions.</p>
+
+<p>In the Ruby world there are great tools - like <a href="https://github.com/thoughtbot/appraisal">Appraisal</a> - which ease the
+process of testing against various versions of dependencies.</p>
+
+<p>Continuous integration services can support testing multiple language versions:</p>
+
+<ul>
+<li>Workflows on CircleCI 2.0 can use a job-per-version</li>
+<li>Travis has a <a href="https://docs.travis-ci.com/user/build-matrix/">build matrix</a> feature to combine different language and
+environment configurations</li>
+</ul>
+
+<p>But what if you want to test multiple configurations, dependencies and language
+versions locally? Or debug a failure in a specific combination without having to
+push and wait for CI?</p>
+
+<p>With these goals in mind I&rsquo;ve created <a href="https://github.com/odlp/dmatrix">dmatrix</a>. It allows you to define a
+matrix of Docker <code>build-arg</code> and <code>env</code> variables:</p>
+<pre class="highlight yaml"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="na">matrix</span><span class="pi">:</span>
+  <span class="na">build_arg</span><span class="pi">:</span>
+    <span class="na">FROM_IMAGE</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">ruby:2.4-alpine</span>
+      <span class="pi">-</span> <span class="s">ruby:2.5-alpine</span>
+      <span class="pi">-</span> <span class="s">ruby:2.6-alpine</span>
+    <span class="na">BUNDLE_GEMFILE</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">gemfiles/factory_bot_4_8.gemfile</span>
+      <span class="pi">-</span> <span class="s">gemfiles/factory_bot_5.gemfile</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>Each possible combination will then be built and run in parallel:</p>
+<pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>bundle exec dmatrix -- &lt;your command&gt;
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>Dmatrix is written in Ruby, but you can use it to test projects written in any
+language if you have Ruby &amp; Docker available locally.</p>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-17139379-1', 'oliverpeate.com');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
