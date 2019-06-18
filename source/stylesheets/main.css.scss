@@ -209,3 +209,8 @@ table {
     fill: #0077B5;
   }
 }
+
+.til-list li {
+  list-style-type: decimal-leading-zero;
+  color: #ddd;
+}

@@ -21,6 +21,12 @@ Swift and Golang. You can find a few <%= link_to 'open source projects', '/open-
   </a>
 </div>
 
+<div class="til" style="display: none;">
+  <h2>Today I Learned</h2>
+  <p>What's a TIL? It's a short, sharp reflection on something you've learnt today. Join the fun at <a href="https://www.todayilearned.fyi/">todayilearned.fyi</a>!</p>
+  <ul class="til-list"></ul>
+</div>
+
 <h2>Posts</h2>
 <% blog_content.each do |article| %>
   <div class="article-summary">
@@ -34,3 +40,5 @@ Swift and Golang. You can find a few <%= link_to 'open source projects', '/open-
     <%- end %>
   </div>
 <% end %>
+
+<%= javascript_include_tag "til", defer: true %>
