@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="Vg4whgeRBlfmhqLeZKQa3R9-VEZPeBzoPe-aSY8_huI" />
+    <title>Restraining Oneself From Dependency Hell</title>
+    <link href="/stylesheets/main-3d598d43.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+  </head>
+  <body>
+    <div class="container">
+        <nav>
+          <span class="back"><a href="/">Home</a></span>
+        </nav>
+      <div role="main">
+          <h1>Restraining Oneself From Dependency Hell</h1>
+        <p>The advice to <a href="http://www.mikeperham.com/2016/02/09/kill-your-dependencies/">Kill Your Dependencies</a> has many merits. Transitive
+dependencies which contain pessimistic version constraints for their own
+dependencies are a major headache. These constraints block you from updating
+shared dependencies when you <em>want to</em> — and become a nightmare when you <strong>have
+to</strong> update to receive a critical security patch.</p>
+
+<p>Despite the common due diligence checklist for selecting dependencies (Is it
+still receiving updates? Are PRs merged? Are there tests / CI?) I think it&rsquo;s
+fair to say most developers don&rsquo;t routinely check transitive dependencies with
+the same rigour.</p>
+
+<p>Overall dependency management is a tricky beast. It&rsquo;s not ideal to reinvent the
+wheel, yet it&rsquo;s shortsighted to include huge or poorly maintained dependencies
+which you may only use a fraction of.</p>
+
+<h2>Practising What You Preach</h2>
+
+<p>Recently I&rsquo;ve been working on a project which has benefitted from parameterized
+testing (a.k.a table tests) to concisely verify business logic with a variety of
+inputs.</p>
+
+<h3>The Original Incarnation</h3>
+
+<p>Originally these tests were implemented with a humble array of arrays and
+<code>#each</code> like so:</p>
+<pre class="highlight ruby"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s2">"my complex business logic"</span> <span class="k">do</span>
+  <span class="p">[</span>
+    <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span> <span class="s2">"weekly"</span><span class="p">,</span>    <span class="s2">"2019-06-13"</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span> <span class="s2">"bi-weekly"</span><span class="p">,</span> <span class="s2">"2019-06-20"</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span> <span class="s2">"monthly"</span><span class="p">,</span>   <span class="s2">"2019-07-13"</span><span class="p">],</span>
+  <span class="p">].</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">today</span><span class="p">,</span> <span class="n">schedule</span><span class="p">,</span> <span class="n">expected_date</span><span class="o">|</span>
+    <span class="n">it</span> <span class="s2">"determines the next appointment date"</span> <span class="k">do</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="no">NextAppointmentCalculator</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="n">today</span><span class="p">,</span> <span class="n">schedule</span><span class="p">)</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span> <span class="n">expected_date</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>This approach is simple and introduces no extra dependencies, but the
+readability isn&rsquo;t optimal; the parameter names are after the data - so you have
+to read the lines in an unnatural order.</p>
+
+<h3>Fancy. But no.</h3>
+
+<p>I found a library called <a href="https://github.com/tomykaira/rspec-parameterized"><code>RSpec::Parameterized</code></a>. The
+resulting test reads well:</p>
+<pre class="highlight ruby"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s2">"my complex business logic"</span> <span class="k">do</span>
+  <span class="n">where</span><span class="p">(</span><span class="ss">:today</span><span class="p">,</span> <span class="ss">:schedule</span><span class="p">,</span> <span class="ss">:expected_date</span><span class="p">)</span> <span class="k">do</span>
+    <span class="p">[</span>
+      <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span> <span class="s2">"weekly"</span><span class="p">,</span>    <span class="s2">"2019-06-13"</span><span class="p">],</span>
+      <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span> <span class="s2">"bi-weekly"</span><span class="p">,</span> <span class="s2">"2019-06-20"</span><span class="p">],</span>
+      <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span> <span class="s2">"monthly"</span><span class="p">,</span>   <span class="s2">"2019-07-13"</span><span class="p">],</span>
+    <span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="n">with_them</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">"determines the next appointment date"</span> <span class="k">do</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="no">NextAppointmentCalculator</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="n">today</span><span class="p">,</span> <span class="n">schedule</span><span class="p">)</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span> <span class="n">expected_date</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>Now the parameter names precede the values. This gem even includes a somewhat
+terrifying table-style syntax:</p>
+<pre class="highlight ruby"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">using</span> <span class="no">RSpec</span><span class="o">::</span><span class="no">Parameterized</span><span class="o">::</span><span class="no">TableSyntax</span>
+
+<span class="n">where</span><span class="p">(</span><span class="ss">:today</span><span class="p">,</span> <span class="ss">:schedule</span><span class="p">,</span> <span class="ss">:expected_date</span><span class="p">)</span> <span class="k">do</span>
+  <span class="s2">"2019-06-05"</span> <span class="o">|</span> <span class="s2">"weekly"</span>    <span class="o">|</span> <span class="s2">"2019-06-13"</span>
+  <span class="s2">"2019-06-05"</span> <span class="o">|</span> <span class="s2">"bi-weekly"</span> <span class="o">|</span> <span class="s2">"2019-06-20"</span>
+  <span class="s2">"2019-06-05"</span> <span class="o">|</span> <span class="s2">"monthly"</span>   <span class="o">|</span> <span class="s2">"2019-07-13"</span>
+<span class="k">end</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>But at what cost? Well, its dependencies include:</p>
+<pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>rspec-parameterized (0.4.2)
+  binding_ninja (&gt;= 0.2.3)
+  parser
+  proc_to_ast
+  rspec (&gt;= 2.13, &lt; 4)
+  unparser
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>And those new dependencies require:</p>
+<pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre>parser (2.6.3.0)
+  ast (~&gt; 2.4.0)
+proc_to_ast (0.1.0)
+  coderay
+  parser
+  unparser
+unparser (0.4.5)
+  abstract_type (~&gt; 0.0.7)
+  adamantium (~&gt; 0.2.0)
+  concord (~&gt; 0.1.5)
+  diff-lcs (~&gt; 1.3)
+  equalizer (~&gt; 0.0.9)
+  parser (~&gt; 2.6.3)
+  procto (~&gt; 0.0.2)
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>Run for the hills.</p>
+
+<h3>Happy medium?</h3>
+
+<p>I ended up creating a micro-DSL and releasing it as a gem called
+<a href="https://github.com/odlp/rspec-with_params"><code>RSpec::WithParams</code></a>. It allows you to write tests like
+this:</p>
+<pre class="highlight ruby"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="no">RSpec</span><span class="p">.</span><span class="nf">describe</span> <span class="s2">"my complex business logic"</span> <span class="k">do</span>
+  <span class="kp">extend</span> <span class="no">RSpec</span><span class="o">::</span><span class="no">WithParams</span><span class="o">::</span><span class="no">DSL</span>
+
+  <span class="n">with_params</span><span class="p">(</span>
+    <span class="p">[</span><span class="ss">:today</span><span class="p">,</span>        <span class="ss">:schedule</span><span class="p">,</span>    <span class="ss">:expected_date</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span>  <span class="s2">"weekly"</span><span class="p">,</span>     <span class="s2">"2019-06-13"</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span>  <span class="s2">"bi-weekly"</span><span class="p">,</span>  <span class="s2">"2019-06-20"</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"2019-06-05"</span><span class="p">,</span>  <span class="s2">"monthly"</span><span class="p">,</span>    <span class="s2">"2019-07-13"</span><span class="p">],</span>
+  <span class="p">)</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">"determines the next appointment date"</span> <span class="k">do</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="no">NextAppointmentCalculator</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="n">today</span><span class="p">,</span> <span class="n">schedule</span><span class="p">)</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span> <span class="n">expected_date</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>This solution fixes my main bugbear with the plain array of arrays approach -
+I&rsquo;d like the parameter names above the values - without introducing a ton of
+dependencies.</p>
+
+<p>Perhaps this is still the wrong option. It&rsquo;s an extra dependency. The answer could
+be to stick with the first option and use plain Ruby. Alternatively, you may
+want to avoid the single extra dependency and keep the readability benefit by
+vendoring the helper function - it&rsquo;s <a href="https://github.com/odlp/rspec-with_params/blob/795c721ca6fcfdc4cc6443409421ea410f023cce/lib/rspec/with_params/dsl.rb#L6-L19)">only ~14 lines of code</a>.</p>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-17139379-1', 'oliverpeate.com');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

@@ -686,6 +686,9 @@ table {
     border: 1px solid #ccc;
     padding: 6px 10px; }
 
+.rouge-table {
+  margin-bottom: 0; }
+
 .container {
   margin: 0 auto 80px auto;
   max-width: 800px; }
