@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="Vg4whgeRBlfmhqLeZKQa3R9-VEZPeBzoPe-aSY8_huI" />
+    <title>Learning by making (small) things</title>
+    <link href="/stylesheets/main-3d598d43.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+  </head>
+  <body>
+    <div class="container">
+        <nav>
+          <span class="back"><a href="/">Home</a></span>
+        </nav>
+      <div role="main">
+          <h1>Learning by making (small) things</h1>
+        <p>Recently I&rsquo;ve been working on a client&rsquo;s ruby project which sends and receives
+image data to an API. The project&rsquo;s tests make use of the <a href="https://github.com/vcr/vcr">VCR gem</a> to record
+these HTTP interactions.</p>
+
+<p>VCR performs admirably, as always, but there&rsquo;s one fly in the ointment. The
+recorded cassettes have a huge blob of binary data inline:</p>
+<pre class="highlight yaml"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="nn">---</span>
+<span class="na">http_interactions</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">request</span><span class="pi">:</span>
+    <span class="na">method</span><span class="pi">:</span> <span class="s">post</span>
+    <span class="na">uri</span><span class="pi">:</span> <span class="s">https://example.com/process</span>
+    <span class="na">body</span><span class="pi">:</span>
+      <span class="na">encoding</span><span class="pi">:</span> <span class="s">ASCII-8BIT</span>
+      <span class="na">string</span><span class="pi">:</span> <span class="kt">!binary</span> <span class="pi">|-</span>
+        <span class="no">LS0tLS0tLS0tLS0tLVJ1YnlNdWx0aXBhcnRQb3N0LTJmNjMxMDE3MDgyOGE3YTM3MDMzYjA3</span>
+        <span class="no">NzAwYmYyYzczDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZvcm1h</span>
+        <span class="no">dCINCg0KcG5nDQotLS0tLS0tLS0tLS0tUnVieU11bHRpcGFydFBvc3QtMmY2MzEwMTcwODI4</span>
+        <span class="no">&lt;snip&gt;</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>This makes both <code>git diff</code> &amp; <code>git add --patch</code> tedious. Also, the cassettes are
+no longer entirely human readable.</p>
+
+<p>Pained by these binary blobs I searched for a remedy and discovered that VCR
+supports custom serializers. Neat!</p>
+
+<p>To build a custom VCR serializer you need to implement the following methods:</p>
+
+<ul>
+<li><code>#serialize</code></li>
+<li><code>#deserialize</code></li>
+<li><code>#file_extension</code></li>
+</ul>
+
+<p>After quick read over the existing serializers which ship with VCR and about 80
+lines of code, I&rsquo;d put together the <a href="https://github.com/odlp/vcr_better_binary">&ldquo;better binary&rdquo; serializer for VCR</a>.
+The serializer persists binary data outside the VCR cassettes.</p>
+
+<p>The resulting cassette looks like this:</p>
+<pre class="highlight yaml"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="na">http_interactions</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">request</span><span class="pi">:</span>
+    <span class="na">method</span><span class="pi">:</span> <span class="s">post</span>
+    <span class="na">uri</span><span class="pi">:</span> <span class="s">https://example.com/process</span>
+    <span class="na">body</span><span class="pi">:</span>
+      <span class="na">encoding</span><span class="pi">:</span> <span class="s">ASCII-8BIT</span>
+      <span class="na">bin_key</span><span class="pi">:</span> <span class="s">lymom-vudim-vunek-mobad-fepak-taset-zosyl-zuhaf-setag</span>
+  <span class="na">response</span><span class="pi">:</span>
+    <span class="na">body</span><span class="pi">:</span>
+      <span class="na">encoding</span><span class="pi">:</span> <span class="s">ASCII-8BIT</span>
+      <span class="na">bin_key</span><span class="pi">:</span> <span class="s">xohog-badok-paneg-memek-tahum-degab-kasip-pefik-colol</span>
+  <span class="c1"># snip</span>
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>And the binary data lives in a subdirectory:</p>
+<pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>spec/fixtures/vcr_cassettes
+├── my-cassette.yml
+└── bin_data
+    ├── lymom-vudim-vunek-mobad-fepak-taset-zosyl-zuhaf-setag
+    └── xohog-badok-paneg-memek-tahum-degab-kasip-pefik-colol
+</pre></td></tr></tbody></table>
+</code></pre>
+<p>Will anyone use this gem? Time will tell.</p>
+
+<p>What I&rsquo;m excited about right now is rediscovering that buzz from <strong>learning by
+making something small</strong>, in a free-form manner.</p>
+
+<p>There&rsquo;s a unique quality to working on a small self-contained challenge. You&rsquo;re
+free from the burdensome complexity that comes with a larger project. Unlike
+following a tutorial you have to apply creative thought. You don&rsquo;t know if
+the outcome will be a success or failure.</p>
+
+<p>Extending a library/tool you use regularly presents an excellent opportunity for
+learning. Along the way, you end up reading at least part of the documentation
+and code. You&rsquo;ll gain insight into the inner workings. Two times isn&rsquo;t a
+pattern, but I experienced similar benefits after creating an
+<a href="https://github.com/odlp/rspec_overview">RSpec formatter</a>.</p>
+
+<p>I thoroughly recommend giving this approach a try. Go forth and build!</p>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-17139379-1', 'oliverpeate.com');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
