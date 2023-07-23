@@ -13,26 +13,10 @@ page '/*.xml', layout: false
 page '/*.json', layout: false
 page '/*.txt', layout: false
 
-# With alternative layout
-# page "/path/to/file.html", layout: :otherlayout
-
-# Proxy pages (http://middlemanapp.com/basics/dynamic-pages/)
-# proxy "/this-page-has-no-template.html", "/template-file.html", locals: {
-#  which_fake_page: "Rendering a fake page with a local variable" }
-
 activate :blog do |blog|
   blog.sources = "posts/{year}-{month}-{day}-{title}.html"
   blog.permalink = "{title}.html"
   blog.default_extension = ".md"
-
-  # blog.prefix = "blog"
-  # blog.taglink = "tags/{tag}.html"
-
-  # blog.summary_separator = /(READMORE)/
-  # blog.summary_length = 250
-  # blog.year_link = "{year}.html"
-  # blog.month_link = "{year}/{month}.html"
-  # blog.day_link = "{year}/{month}/{day}.html"
 
   # Pagination
   blog.paginate = false
@@ -52,6 +36,3 @@ end
 activate :syntax, line_numbers: true
 set :markdown_engine, :redcarpet
 set :markdown, fenced_code_blocks: true, smartypants: true, tables: true
-
-# https://github.com/middleman/middleman/issues/2002
-Tilt::SYMBOL_ARRAY_SORTABLE = false
